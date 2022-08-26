@@ -24,11 +24,19 @@ class WindowManager {
     this.activeWindows.push(w);
   }
 
-  onMousePressed(){
-    
+  onMousePressed(mx, my){
+    //for each window, check if its clicked.
+    for(let i = 0; i < this.activeWindows.length; i++){
+      let w = this.activeWindows[i];
+      let isValidClick = w.isValidClickRange(mx, my);
+      let isHeadbarClick = w.isHeadbarClickRange(my);
+      if(isValidClick){
+        console.log(w.title);
+      }
+    }
   }
   
-  onMouseReleased(){
+  onMouseReleased(mx, my){
     
   }
   

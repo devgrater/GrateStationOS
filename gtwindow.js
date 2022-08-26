@@ -18,9 +18,9 @@ function draw() {
 }
 
 function mousePressed(){
-  wm.onMousePressed();
+  wm.onMousePressed(mouseX, mouseY);
 }
 
 function mouseReleased(){
-  wm.onMouseReleased();
+  wm.onMouseReleased(mouseX, mouseY);
 }

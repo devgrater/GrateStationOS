@@ -13,6 +13,7 @@ class GsWindow{
     this.posX = posX;
     this.posY = posY;
     this.lifespan = 0;
+    this.windowState = "NORMAL";
   }
   
   onWindowReady(){
@@ -40,7 +41,7 @@ class GsWindow{
     
     push();
       stroke(255, 0, 0);
-      strokeWeight(1);
+      strokeWeight(2);
       fill(255, 0, 0);
       push();
         //main window
@@ -90,13 +91,13 @@ class GsWindow{
   }
   
   isValidClickRange(mx, my){
-    let isInXRange = abs(mx - this.posX) < this.sizeX;
-    let isInYRange = abs(my - this.posY) < this.sizeY;
-    return isInXRange && isInYRange;
+    let isInXRange = abs(mx - this.posX) < this.sizeX * 0.5;
+    let isInYRange = abs(my - this.posY) < this.sizeY * 0.5;
+    return (isInXRange && isInYRange) || (isInXRange && this.isHeadbarClickRange(my));
   }
   
-  isHeadbarClickRange(){
-    let yDiff = (my - this.posY);
-   return (yDiff < headerbarSize) && (yDiff > 0);
+  isHeadbarClickRange(my){
+    let yDiff = (my - (this.posY - this.sizeY * 0.5));
+    return (yDiff > -this.headerbarSize) && (yDiff < 0);
   }
 }
