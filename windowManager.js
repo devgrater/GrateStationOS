@@ -30,8 +30,8 @@ class WindowManager {
       let w = this.activeWindows[i];
       let isValidClick = w.isValidClickRange(mx, my);
       let isHeadbarClick = w.isHeadbarClickRange(my);
-      if(isValidClick){
-        console.log(w.title);
+      if(isValidClick && isHeadbarClick){
+        w.onMouseDown();
       }
     }
   }

@@ -37,6 +37,10 @@ class GsWindow{
     this.isMouseDragging = false;
   }
   
+  handleWindowDrag(){
+    
+  }
+  
   drawWindowBackPanel(cornerX, cornerY){
     
     push();
@@ -67,6 +71,8 @@ class GsWindow{
     text(this.title, cornerX + 10.0, cornerY - this.headerbarSize * 0.5);
   }
   
+  
+  
   drawWindowContent(dt){
     
   }
@@ -76,11 +82,14 @@ class GsWindow{
   }
   
   render(dt){
+    this.handleWindowDrag();
     let cornerX = this.posX - 0.5 * this.sizeX;
     let cornerY = this.posY - 0.5 * this.sizeY;
+    
     this.drawWindowBackPanel(cornerX, cornerY);
     this.drawWindowTitle(cornerX, cornerY);
     this.drawExitIcon(cornerX, cornerY);
+    
     push();
       translate(cornerX, cornerY);
       this.drawWindowContent(dt);
