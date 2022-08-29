@@ -13,6 +13,7 @@ class GsWindow{
     this.posX = posX;
     this.posY = posY;
     this.lifespan = 0;
+    this.buffer = createGraphics(this.sizeX, this.sizeY);
     this.windowState = "NORMAL";
   }
   
@@ -81,7 +82,8 @@ class GsWindow{
   
   
   drawWindowContent(dt){
-    
+    this.buffer.background(0);
+    image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
   
   update(dt){

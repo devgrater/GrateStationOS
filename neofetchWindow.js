@@ -9,7 +9,7 @@ class NeofetchWindow extends GsWindow{
     this.xDist = 1.0;
     this.camHeight = 1.5;
     this.hlineCount = 32.0;
-    this.buffer = createGraphics(this.sizeX, this.sizeY);
+    
   }
   
   drawWindowContent(dt){
