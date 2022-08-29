@@ -23,6 +23,12 @@ class WindowManager {
     this._themeManager.applyThemeStyle(w);
     this.activeWindows.push(w);
   }
+  
+  onMouseMoved(mx, my, px, py){
+    for(let i = 0; i < this.activeWindows.length; i++){
+      this.activeWindows[i].onMouseMoved(mx, my, px, py);
+    }
+  }
 
   onMousePressed(mx, my){
     //for each window, check if its clicked.
@@ -31,13 +37,16 @@ class WindowManager {
       let isValidClick = w.isValidClickRange(mx, my);
       let isHeadbarClick = w.isHeadbarClickRange(my);
       if(isValidClick && isHeadbarClick){
-        w.onMouseDown();
+        w.onMouseDownHeadbar();
       }
     }
   }
   
   onMouseReleased(mx, my){
-    
+    for(let i = 0; i < this.activeWindows.length; i++){
+      let w = this.activeWindows[i];
+      w.onMouseUpHeadbar();
+    }
   }
   
 }

@@ -29,16 +29,23 @@ class GsWindow{
     
   }
   
-  onMouseDown(){
+  onMouseDownHeadbar(){
     this.isMouseDragging = true;
   }
   
-  onMouseUp(){
+  onMouseUpHeadbar(){
     this.isMouseDragging = false;
   }
   
-  handleWindowDrag(){
-    
+  onMouseMoved(mx, my, px, py){
+    if(this.isMouseDragging){
+      this.handleWindowDrag(mx - px, my - py);
+    }
+  }
+  
+  handleWindowDrag(dx, dy){
+    this.posX += dx;
+    this.posY += dy;
   }
   
   drawWindowBackPanel(cornerX, cornerY){
@@ -82,7 +89,6 @@ class GsWindow{
   }
   
   render(dt){
-    this.handleWindowDrag();
     let cornerX = this.posX - 0.5 * this.sizeX;
     let cornerY = this.posY - 0.5 * this.sizeY;
     

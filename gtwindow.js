@@ -15,6 +15,7 @@ function setup() {
 function draw() {
   system.refreshScreen();
   wm.renderAllWindows(deltaTime);
+  wm.onMouseMoved(mouseX, mouseY, pmouseX, pmouseY);
 }
 
 function mousePressed(){
