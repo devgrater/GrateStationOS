@@ -51,7 +51,12 @@ class NeofetchWindow extends GsWindow{
         
         this.buffer.line(xCoord + halfWidth, this.sizeY, xCoord / zDistFar + halfWidth, this.sizeY - this.sizeY / zDistFar);
       }
-      
+    this.drawNeofetch();
+
+    image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+  }
+  
+  drawNeofetch(){
       this.buffer.push();
       //line(
         this.buffer.textFont("consolas");
@@ -67,7 +72,6 @@ class NeofetchWindow extends GsWindow{
         this.buffer.text("By DeveloGrater", this.sizeX * 0.5, this.sizeY * 0.5 + 8);
       this.buffer.pop();
     this.buffer.pop();
-    image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
   
  

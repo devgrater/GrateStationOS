@@ -52,12 +52,12 @@ class GsWindow{
     
     push();
       stroke(255, 0, 0);
-      strokeWeight(2);
+      strokeWeight(1);
       fill(255, 0, 0);
       push();
         //main window
-        fill(0);
-        rect(cornerX, cornerY, this.sizeX, this.sizeY);
+        noFill();//fill(0);
+        rect(cornerX, cornerY - this.headerbarSize, this.sizeX, this.sizeY + this.headerbarSize);
       pop();
       rect(cornerX, cornerY - this.headerbarSize, this.sizeX, this.headerbarSize);
     pop();
@@ -92,14 +92,17 @@ class GsWindow{
     let cornerX = this.posX - 0.5 * this.sizeX;
     let cornerY = this.posY - 0.5 * this.sizeY;
     
-    this.drawWindowBackPanel(cornerX, cornerY);
-    this.drawWindowTitle(cornerX, cornerY);
-    this.drawExitIcon(cornerX, cornerY);
-    
     push();
       translate(cornerX, cornerY);
       this.drawWindowContent(dt);
+      this.drawWindowBackPanel(0, 0);
+      this.drawWindowTitle(0, 0);
+      this.drawExitIcon(0, 0);
     pop();
+    
+
+    
+
     
     this.update(dt);
     //circle(this.posX, this.posY, this.sizeX);
