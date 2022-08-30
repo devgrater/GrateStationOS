@@ -5,6 +5,7 @@ class GsWindow{
     console.log(title + " Ready");
   }
   
+  
   windowSetup(title, posX, posY, sizeX, sizeY){
     this.isMouseDragging = false;
     this.title = title;

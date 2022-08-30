@@ -7,7 +7,7 @@ function setup() {
   system.setWindowDimensions(windowWidth, windowHeight);
   system.initialize();
   let template = new NeofetchWindow("GrateStation OS v1.0", 512, 512, 250, 140);
-  let tw = new GsWindow("Test Window", 256, 256, 480, 320);
+  let tw = new FileDecryptWindow("Test Window", 256, 256, 480, 320);
   wm.startWindowInstance(template);
   wm.startWindowInstance(tw);
   
