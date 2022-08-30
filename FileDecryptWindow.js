@@ -12,6 +12,11 @@ class FileDecryptWindow extends GsWindow{
       filename += charset.charAt(random(0, charset.length));
     }
     filename += "." + random(filetype);
+    //filename cleanup:
+    while(filename.startsWith('_') || filename.startsWith('-')){
+      filename = filename.substring(1);
+    }
+
     return filename;
   }
 
@@ -24,7 +29,7 @@ class FileDecryptWindow extends GsWindow{
 
   generateTaskInfo(){
     this.taskTimeElapsed = 0;
-    this.taskTimeRequired = random(3, 7);
+    this.taskTimeRequired = random(1, 5);
     this.chanceToStuck = random() * 0.6; //cant stuck for too long!
   }
 

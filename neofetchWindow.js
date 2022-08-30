@@ -1,7 +1,7 @@
 class NeofetchWindow extends GsWindow{
   
   onWindowReady(){
-    this.linespeed = 0.0001;
+    this.linespeed = 0.1;
     this.headPercentage = 0.0;
     this.lineCount = 8.0;
     this.lineDst = 1.0 / this.lineCount;
