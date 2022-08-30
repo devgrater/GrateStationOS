@@ -33,6 +33,7 @@ class FileDecryptWindow extends GsWindow{
 
   generateTaskInfo(){
     this.taskTimeElapsed = 0;
+    this.timeElapsedSinceLastJob = 0;
     this.taskTimeRequired = random(1, 7);
     this.chanceToStuck = random() * 0.6; //cant stuck for too long!
   }
@@ -110,6 +111,7 @@ class FileDecryptWindow extends GsWindow{
     this.progress = progress;
     this.unclampedProgress = progress + this.passesDone;
     let stuckMeter = noise(this.lifespan);
+    this.timeElapsedSinceLastJob += dt;
     if(stuckMeter >= this.chanceToStuck){
       this.taskTimeElapsed += dt;
     }
@@ -145,6 +147,8 @@ class FileDecryptWindow extends GsWindow{
       //////////////////////////////////////////
       let gridWidth = this.decryptWindowWidth / 8;
       let gridHeight = this.decryptWindowHeight / 4;
+      let timeBegun = this.timeElapsedSinceLastJob; //0.5sec lerp
+      let lerpProgress = constrain(timeBegun / 0.5, 0, 1);
       this.buffer.push();
         this.buffer.translate(gridWidth * 0.5, gridHeight * 0.5);
         for(let i = 0; i < 8; i++){ //horizontal
@@ -176,7 +180,7 @@ class FileDecryptWindow extends GsWindow{
             else{
               if(levelOfCorruption < 1.0){
                 this.buffer.push()
-                this.buffer.fill(128 * levelOfCorruption, 0, 0);
+                this.buffer.fill(lerp(255, 128 * levelOfCorruption, lerpProgress), 0, 0);
                   this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
                   this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
                 this.buffer.pop();
