@@ -1,8 +1,7 @@
 class FileDecryptWindow extends GsWindow{
   
   onWindowReady(){
-    this.filename = this.generateRandomFileName(8);
-    this.title = "Decrypting " + this.filename + "...";
+    this.startNewRandomTask();
   }
   
   generateRandomFileName(fileLength){
@@ -15,10 +14,61 @@ class FileDecryptWindow extends GsWindow{
     filename += "." + random(filetype);
     return filename;
   }
+
+  startNewRandomTask(){
+    this.generateTaskInfo();
+    this.passes = random(1, 4); //maximum of 3 passes
+    this.passesDone = 0;
+    this.filename = this.generateRandomFileName(random(6, 12));
+  }
+
+  generateTaskInfo(){
+    this.taskTimeElapsed = 0;
+    this.taskTimeRequired = random(3, 7);
+    this.chanceToStuck = random() * 0.6; //cant stuck for too long!
+  }
+
+  updateTitle(filename){
+    //also, just add a small progress indicator...
+    let progress = this.taskTimeElapsed / this.taskTimeRequired;
+    progress = constrain(progress, 0, 1);
+    progress *= 100;
+    this.title = "Decrypting " + filename + "..." + floor(progress) + "% (Pass " + (this.passesDone + 1) + "/" + floor(this.passes) + ")";
+    
+  }
+
+  updateTaskProgress(dt){
+    
+    let stuckMeter = noise(this.lifespan);
+    if(stuckMeter >= this.chanceToStuck){
+      this.taskTimeElapsed += dt;
+    }
+    this.updateTitle(this.filename);
+    this.checkTaskCompleted();
+  }
+
+  checkTaskCompleted(){
+    //a small random chance to extend the task
+    if(this.taskTimeElapsed > this.taskTimeRequired){
+      this.passesDone += 1;
+      if(this.passesDone >= this.passes - 1){
+        //all done!
+        this.startNewRandomTask();
+      }
+      else{
+        this.generateTaskInfo();
+      }
+    }
+  }
   
   drawWindowContent(dt){
     this.buffer.background(0);
     image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+  }
+
+  update(dt){
+    super.update(dt);
+    this.updateTaskProgress(dt);
   }
   
   drawNeofetch(){
