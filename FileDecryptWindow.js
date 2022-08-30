@@ -80,9 +80,18 @@ class FileDecryptWindow extends GsWindow{
         let offset = [];
         let taskByte = "";
         for(let j = 0; j < 4; j++){
-          taskByte += hexInfo.charAt(random(0, hexInfo.length));
-          offset.push(random() * 0.95 + this.passesDone);
-          taskByte += hexInfo.charAt(random(0, hexInfo.length));
+          //if its corrupted
+          if(random() < 0.5){
+            taskByte += hexInfo.charAt(random(0, hexInfo.length));
+            offset.push(random() * 0.95 + this.passesDone);
+            //taskByte += hexInfo.charAt(random(0, hexInfo.length));
+          }
+          else{
+            taskByte += this.taskBits[i][j];
+            offset.push(this.progressNeeded[i][j]);
+            //taskByte += hexInfo.charAt(random(0, hexInfo.length));
+          }
+
         }
         this.taskBits[i] = taskByte;
         this.progressNeeded[i] = offset;
