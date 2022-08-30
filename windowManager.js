@@ -44,7 +44,7 @@ class WindowManager {
         //move window to front:
         this.activeWindows.splice(i, 1);
         this.activeWindows.splice(0, 0, w);
-
+        break;
       }
     }
   }

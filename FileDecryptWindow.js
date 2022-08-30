@@ -2,11 +2,13 @@ class FileDecryptWindow extends GsWindow{
   
   onWindowReady(){
     this.startNewRandomTask();
+    this.decryptWindowHeight = 80; //half height
+    this.decryptWindowWidth = 280;
   }
   
   generateRandomFileName(fileLength){
-    let charset = "0123456789_ABCDEF-abcdef";
-    let filetype = ["tar", "gz", "xar", "vtec", "dec", "tga", "exr", "mp4", "exe", "md", "bin", "dxc", "dll", "pak", "dtf"];
+    const charset = "0123456789_ABCDEF-abcdef";
+    const filetype = ["tar", "gz", "xar", "vtec", "dec", "tga", "exr", "mp4", "exe", "md", "bin", "dxc", "dll", "pak", "dtf"];
     let filename = "";
     for(let i = 0; i < fileLength; i++){
       filename += charset.charAt(random(0, charset.length));
@@ -24,26 +26,56 @@ class FileDecryptWindow extends GsWindow{
     this.generateTaskInfo();
     this.passes = random(1, 4); //maximum of 3 passes
     this.passesDone = 0;
-    this.filename = this.generateRandomFileName(random(6, 12));
+    this.filename = this.generateRandomFileName(random(3, 7));
+    //generate new taskbit:
+    this.generateTaskBits();
   }
 
   generateTaskInfo(){
     this.taskTimeElapsed = 0;
-    this.taskTimeRequired = random(1, 5);
+    this.taskTimeRequired = random(1, 7);
     this.chanceToStuck = random() * 0.6; //cant stuck for too long!
   }
 
   updateTitle(filename){
     //also, just add a small progress indicator...
-    let progress = this.taskTimeElapsed / this.taskTimeRequired;
-    progress = constrain(progress, 0, 1);
-    progress *= 100;
-    this.title = "Decrypting " + filename + "..." + floor(progress) + "% (Pass " + (this.passesDone + 1) + "/" + floor(this.passes) + ")";
     
+    let title = "Decrypting " + filename + " (" + floor(this.progress * 100) + "%, Pass " + (this.passesDone + 1) + "/" + floor(this.passes) + ")";
+    //truncate extra:
+    this.title = title;
   }
 
+  
+  generateTaskBits(){
+    //bunch of random hex
+    //each having a weight of how much has been done
+    const hexInfo = "0123456789ABCDEF";
+    //generate a string...
+    this.taskBits = [];
+    this.progressNeeded = [];
+    for(let i = 0; i < 32; i++){ //4 By 8 Grid, each grid containing 4 hex codes
+      let taskByte = "";
+      let offset = [];
+      let progress = random();
+      for(let i = 0; i < 4; i++){
+        taskByte += hexInfo.charAt(random(0, hexInfo.length));
+        if(random() > 0.5){
+          offset.push(((progress * 15 + random()) / 16) * 0.95);
+        }
+        else{
+          offset.push(random() * 0.95); //random error
+        }
+      }
+      this.taskBits.push(taskByte);
+      this.progressNeeded.push(offset);
+    }
+  }
+
+
   updateTaskProgress(dt){
-    
+    let progress = this.taskTimeElapsed / this.taskTimeRequired;
+    progress = constrain(progress, 0, 1);
+    this.progress = progress;
     let stuckMeter = noise(this.lifespan);
     if(stuckMeter >= this.chanceToStuck){
       this.taskTimeElapsed += dt;
@@ -68,6 +100,45 @@ class FileDecryptWindow extends GsWindow{
   
   drawWindowContent(dt){
     this.buffer.background(0);
+    //draw task bits:
+    //calculate block:
+    this.buffer.push();
+      this.buffer.textFont("consolas");
+      this.buffer.fill(255, 0, 0);
+      this.buffer.textSize(12);
+      this.buffer.textAlign("center", "center");        
+      this.buffer.textStyle(BOLD);
+      //////////////////////////////////////////
+      //          DECRYPTION EFFECT           //
+      // _0AF  __0D  D0_A  F_F1               //
+      //////////////////////////////////////////
+      this.buffer.push();
+        this.buffer.translate(this.decryptWindowWidth / 16, this.decryptWindowHeight / 8);
+        for(let i = 0; i < 8; i++){ //horizontal
+          for(let j = 0; j < 4; j++){
+            let xPos = i / 8 * this.decryptWindowWidth;
+            let yPos = j / 4 * this.decryptWindowHeight;
+            let showedBits = "";
+            let index = j * 8 + i;
+            let showedCount = 1;
+            for(let k = 0; k < 4; k++){
+              if(this.progressNeeded[index][k] < this.progress){
+                showedBits += this.taskBits[index].charAt(k);
+                showedCount += 1;
+              }
+              else{
+                showedBits += "_";
+              }
+            }
+
+            this.buffer.fill(255 * showedCount / 5, 0, 0);
+            this.buffer.text(showedBits, xPos, yPos);
+          }
+        }
+
+      
+      this.buffer.pop();
+    this.buffer.pop();
     image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
 
