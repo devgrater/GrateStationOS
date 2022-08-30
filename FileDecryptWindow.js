@@ -53,11 +53,12 @@ class FileDecryptWindow extends GsWindow{
     //generate a string...
     this.taskBits = [];
     this.progressNeeded = [];
+    this.corruption = [];
     for(let i = 0; i < 32; i++){ //4 By 8 Grid, each grid containing 4 hex codes
       let taskByte = "";
       let offset = [];
       let progress = random();
-      for(let i = 0; i < 4; i++){
+      for(let j = 0; j < 4; j++){
         taskByte += hexInfo.charAt(random(0, hexInfo.length));
         if(random() > 0.2){
           offset.push(((progress * 15 + random()) / 16) * 0.95);
@@ -68,6 +69,28 @@ class FileDecryptWindow extends GsWindow{
       }
       this.taskBits.push(taskByte);
       this.progressNeeded.push(offset);
+      this.corruption.push(1.0);
+    }
+  }
+
+  corruptTaskBits(){
+    const hexInfo = "0123456789ABCDEF";
+    for(let i = 0; i < 32; i++){ //4 By 8 Grid, each grid containing 4 hex codes
+      if(random() < 0.3){
+        let offset = [];
+        let taskByte = "";
+        for(let j = 0; j < 4; j++){
+          taskByte += hexInfo.charAt(random(0, hexInfo.length));
+          offset.push(random() * 0.95 + this.passesDone);
+          taskByte += hexInfo.charAt(random(0, hexInfo.length));
+        }
+        this.taskBits[i] = taskByte;
+        this.progressNeeded[i] = offset;
+        this.corruption[i] = random();
+      }
+      else{
+        this.corruption[i] = 1.0;
+      }
     }
   }
 
@@ -76,6 +99,7 @@ class FileDecryptWindow extends GsWindow{
     let progress = this.taskTimeElapsed / this.taskTimeRequired;
     progress = constrain(progress, 0, 1);
     this.progress = progress;
+    this.unclampedProgress = progress + this.passesDone;
     let stuckMeter = noise(this.lifespan);
     if(stuckMeter >= this.chanceToStuck){
       this.taskTimeElapsed += dt;
@@ -94,14 +118,12 @@ class FileDecryptWindow extends GsWindow{
       }
       else{
         this.generateTaskInfo();
+        this.corruptTaskBits();
       }
     }
   }
   
-  drawWindowContent(dt){
-    this.buffer.background(0);
-    //draw task bits:
-    //calculate block:
+  drawDecryptionWindow(){
     this.buffer.push();
       this.buffer.textFont("consolas");
       this.buffer.fill(255, 0, 0);
@@ -123,8 +145,9 @@ class FileDecryptWindow extends GsWindow{
             let showedBits = "";
             let index = j * 8 + i;
             let showedCount = 1;
+            let levelOfCorruption = this.corruption[index];
             for(let k = 0; k < 4; k++){
-              if(this.progressNeeded[index][k] < this.progress){
+              if(this.progressNeeded[index][k] < this.unclampedProgress){
                 showedBits += this.taskBits[index].charAt(k);
                 showedCount += 1;
               }
@@ -135,21 +158,42 @@ class FileDecryptWindow extends GsWindow{
             if(showedCount == 5){
               this.buffer.push()
               this.buffer.fill(192, 0, 0);
+              
               this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
               this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
               this.buffer.pop();
               this.buffer.fill(0, 0, 0);
             }
             else{
-              this.buffer.fill(255 * showedCount / 5, 0, 0);
+              if(levelOfCorruption < 1.0){
+                this.buffer.push()
+                this.buffer.fill(128 * levelOfCorruption, 0, 0);
+                  this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
+                  this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
+                this.buffer.pop();
+                this.buffer.fill(255, 0, 0);
+              }
+              else{
+                this.buffer.fill(255 * showedCount / 5, 0, 0);
+              }
+              
             }
             
             this.buffer.text(showedBits, xPos, yPos);
           }
         }
-
-      
       this.buffer.pop();
+  }
+
+  drawDecryptionLog(){
+
+  }
+
+  drawWindowContent(dt){
+    this.buffer.background(0);
+    //draw task bits:
+    //calculate block:
+    this.drawDecryptionWindow();
     this.buffer.pop();
     image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
