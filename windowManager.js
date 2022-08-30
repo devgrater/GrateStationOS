@@ -14,7 +14,8 @@ class WindowManager {
   }
   
   renderAllWindows(dt){
-    for(let i = 0; i < this.activeWindows.length; i++){
+    //when rendering, we do it back to front:
+    for(let i = this.activeWindows.length - 1; i >= 0; i--){
       this.activeWindows[i].render(dt);
     }
   }
@@ -38,6 +39,12 @@ class WindowManager {
       let isHeadbarClick = w.isHeadbarClickRange(my);
       if(isValidClick && isHeadbarClick){
         w.onMouseDownHeadbar();
+      }
+      if(isValidClick){
+        //move window to front:
+        this.activeWindows.splice(i, 1);
+        this.activeWindows.splice(0, 0, w);
+
       }
     }
   }
