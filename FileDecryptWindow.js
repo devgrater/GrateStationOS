@@ -59,7 +59,7 @@ class FileDecryptWindow extends GsWindow{
       let progress = random();
       for(let i = 0; i < 4; i++){
         taskByte += hexInfo.charAt(random(0, hexInfo.length));
-        if(random() > 0.5){
+        if(random() > 0.2){
           offset.push(((progress * 15 + random()) / 16) * 0.95);
         }
         else{
@@ -112,8 +112,10 @@ class FileDecryptWindow extends GsWindow{
       //          DECRYPTION EFFECT           //
       // _0AF  __0D  D0_A  F_F1               //
       //////////////////////////////////////////
+      let gridWidth = this.decryptWindowWidth / 8;
+      let gridHeight = this.decryptWindowHeight / 4;
       this.buffer.push();
-        this.buffer.translate(this.decryptWindowWidth / 16, this.decryptWindowHeight / 8);
+        this.buffer.translate(gridWidth * 0.5, gridHeight * 0.5);
         for(let i = 0; i < 8; i++){ //horizontal
           for(let j = 0; j < 4; j++){
             let xPos = i / 8 * this.decryptWindowWidth;
@@ -130,8 +132,18 @@ class FileDecryptWindow extends GsWindow{
                 showedBits += "_";
               }
             }
-
-            this.buffer.fill(255 * showedCount / 5, 0, 0);
+            if(showedCount == 5){
+              this.buffer.push()
+              this.buffer.fill(192, 0, 0);
+              this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
+              this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
+              this.buffer.pop();
+              this.buffer.fill(0, 0, 0);
+            }
+            else{
+              this.buffer.fill(255 * showedCount / 5, 0, 0);
+            }
+            
             this.buffer.text(showedBits, xPos, yPos);
           }
         }
