@@ -29,7 +29,7 @@ class FileDecryptWindow extends GsWindow{
     this.generateTaskInfo();
     this.passes = random(1, 5); //maximum of 3 passes
     this.passesDone = 0;
-    this.filename = this.generateRandomFileName(random(1, 5));
+    this.filename = this.generateRandomFileName(random(3, 6));
     this.pushLog(this.createLog("start", this.filename));
     //generate new taskbit:
     this.generateTaskBits();
@@ -95,7 +95,7 @@ class FileDecryptWindow extends GsWindow{
   updateTitle(filename){
     //also, just add a small progress indicator...
     
-    let title = "Decrypting " + filename + " (" + floor(this.progress * 100) + "%, Pass " + (this.passesDone + 1) + ")";
+    let title = "Decrypt " + filename + " (" + floor(this.progress * 100) + "%, Pass " + (this.passesDone + 1) + ")";
     //truncate extra:
     this.title = title;
   }
@@ -211,9 +211,11 @@ class FileDecryptWindow extends GsWindow{
         //const spinner = "-/|\\";
         
         for(let i = 0; i < 8; i++){ //horizontal
-          let currentTime = floor((this.timeElapsedSinceLastJob * 16 - i) % 16);
-          let brightnessOffset = (currentTime / 16) * 32;
+          
+          
           for(let j = 0; j < 4; j++){
+            let currentTime = floor((this.timeElapsedSinceLastJob * 16 - i - j) % 16);
+            let brightnessOffset = (currentTime / 16) * 32;
             let xPos = i / 8 * this.decryptWindowWidth;
             let yPos = j / 4 * this.decryptWindowHeight;
             let showedBits = "";
