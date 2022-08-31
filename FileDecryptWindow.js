@@ -208,7 +208,11 @@ class FileDecryptWindow extends GsWindow{
       let lerpProgress = constrain(timeBegun / 0.5, 0, 1);
       this.buffer.push();
         this.buffer.translate(gridWidth * 0.5, gridHeight * 0.5);
+        //const spinner = "-/|\\";
+        
         for(let i = 0; i < 8; i++){ //horizontal
+          let currentTime = floor((this.timeElapsedSinceLastJob * 16 - i) % 16);
+          let brightnessOffset = (currentTime / 16) * 32;
           for(let j = 0; j < 4; j++){
             let xPos = i / 8 * this.decryptWindowWidth;
             let yPos = j / 4 * this.decryptWindowHeight;
@@ -222,12 +226,14 @@ class FileDecryptWindow extends GsWindow{
                 showedCount += 1;
               }
               else{
-                showedBits += "_";
+                
+                showedBits += "_";//spinner.charAt(currentTime);
               }
             }
             if(showedCount == 5){
               this.buffer.push()
-              this.buffer.fill(192, 0, 0);
+              this.buffer.fill(192 + brightnessOffset, 0, 0);
+              
               
               this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
               this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
@@ -237,7 +243,7 @@ class FileDecryptWindow extends GsWindow{
             else{
               if(levelOfCorruption < 1.0){
                 this.buffer.push()
-                this.buffer.fill(lerp(192, 128 * levelOfCorruption, lerpProgress), 0, 0);
+                this.buffer.fill(lerp(192 + brightnessOffset, 128 * levelOfCorruption + brightnessOffset, lerpProgress), 0, 0);
                   this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
                   this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
                 this.buffer.pop();
