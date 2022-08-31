@@ -1,9 +1,12 @@
 class FileDecryptWindow extends GsWindow{
   
   onWindowReady(){
-    this.startNewRandomTask();
+    this.windowLog = []; //push to the log:
     this.decryptWindowHeight = 80; //half height
     this.decryptWindowWidth = 280;
+    this.logCount = 8;
+    this.startNewRandomTask();
+
   }
   
   generateRandomFileName(fileLength){
@@ -24,11 +27,62 @@ class FileDecryptWindow extends GsWindow{
 
   startNewRandomTask(){
     this.generateTaskInfo();
-    this.passes = random(1, 4); //maximum of 3 passes
+    this.passes = random(1, 5); //maximum of 3 passes
     this.passesDone = 0;
-    this.filename = this.generateRandomFileName(random(3, 7));
+    this.filename = this.generateRandomFileName(random(1, 5));
+    this.pushLog(this.createLog("start", this.filename));
     //generate new taskbit:
     this.generateTaskBits();
+  }
+
+  createLog(logType, filename){
+    let log = "";
+    const startReason = [
+      "Begin decryption of file {0}...",
+      "Start retrieving file {0}...",
+      "Receiving file {0} from remote server...",
+      "Begin recovery of file {0}..."
+    ];
+
+    const passReason = [
+      "Verifying integrity of file {0}...",
+      "Byte error detected in file {0}. Attemp reconstruction from parity...",
+      "Checking sum of file {0}...",
+      "Attempting to reconstruct error bytes from file {0}...",
+      "Re-acquiring partial data in file {0}...",
+      "Re-encrypting file {0} using local key..."
+    ];
+
+    const completeReason = [
+      "All operations success. File {0} moved to ./output.",
+      "File {0} decrypted completely. Content moved to ./output.",
+      "File {0} operational. Scheduling for further processes.",
+      "All passes completed. File {0} sent further down the pipeline.",
+      "Operation failed in file {0}. Re-decryption scheduled.",
+      "Malicious bytes detected in file {0}. File discarded."
+    ]
+    switch(logType){
+      case "start":
+        //pick a random!
+        log = random(startReason);
+        break;
+      case "pass":
+        log = random(passReason);
+        break;
+      case "done":
+        log = random(completeReason);
+        break;
+    }
+    log = log.replace("{0}", filename);
+    return log;
+  }
+
+  pushLog(content){
+    this.windowLog.push(content);
+    if(this.windowLog.length > this.logCount){
+      this.windowLog.shift();
+    }
+
   }
 
   generateTaskInfo(){
@@ -41,7 +95,7 @@ class FileDecryptWindow extends GsWindow{
   updateTitle(filename){
     //also, just add a small progress indicator...
     
-    let title = "Decrypting " + filename + " (" + floor(this.progress * 100) + "%, Pass " + (this.passesDone + 1) + "/" + floor(this.passes) + ")";
+    let title = "Decrypting " + filename + " (" + floor(this.progress * 100) + "%, Pass " + (this.passesDone + 1) + ")";
     //truncate extra:
     this.title = title;
   }
@@ -75,6 +129,7 @@ class FileDecryptWindow extends GsWindow{
   }
 
   corruptTaskBits(){
+    this.pushLog(this.createLog("pass", this.filename));
     const hexInfo = "0123456789ABCDEF";
     for(let i = 0; i < 32; i++){ //4 By 8 Grid, each grid containing 4 hex codes
       if(random() < 0.3){
@@ -125,9 +180,11 @@ class FileDecryptWindow extends GsWindow{
       this.passesDone += 1;
       if(this.passesDone >= this.passes - 1){
         //all done!
+        this.pushLog(this.createLog("done", this.filename));
         this.startNewRandomTask();
       }
       else{
+        
         this.generateTaskInfo();
         this.corruptTaskBits();
       }
@@ -180,7 +237,7 @@ class FileDecryptWindow extends GsWindow{
             else{
               if(levelOfCorruption < 1.0){
                 this.buffer.push()
-                this.buffer.fill(lerp(255, 128 * levelOfCorruption, lerpProgress), 0, 0);
+                this.buffer.fill(lerp(192, 128 * levelOfCorruption, lerpProgress), 0, 0);
                   this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
                   this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
                 this.buffer.pop();
@@ -199,7 +256,28 @@ class FileDecryptWindow extends GsWindow{
   }
 
   drawDecryptionLog(){
-
+    this.buffer.push();
+    this.buffer.translate(0, this.decryptWindowHeight);
+    this.buffer.textFont("consolas");
+    this.buffer.fill(255, 0, 0);
+    this.buffer.textSize(12);
+    this.buffer.textWrap(CHAR);
+    this.buffer.textAlign("left", "top");        
+    this.buffer.textStyle(BOLD);
+    let content = "";
+    let windowLogHead = 0;
+    let warpCount = 40;//floor(this.sizeX / 8);
+    for(let i = 0; i < this.windowLog.length; i++){
+      let current = this.windowLog[i];
+      while(current.length > warpCount){
+        content += current.substring(0, warpCount) + "\n";
+        current = current.substring(warpCount);
+      }
+      content += current + "\n";
+    }
+    //console.log(content);
+    this.buffer.text(content, 0, 0);
+    this.buffer.pop();
   }
 
   drawWindowContent(dt){
@@ -207,6 +285,7 @@ class FileDecryptWindow extends GsWindow{
     //draw task bits:
     //calculate block:
     this.drawDecryptionWindow();
+    this.drawDecryptionLog();
     this.buffer.pop();
     image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
