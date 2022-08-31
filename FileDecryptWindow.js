@@ -4,7 +4,7 @@ class FileDecryptWindow extends GsWindow{
     this.windowLog = []; //push to the log:
     this.decryptWindowHeight = 80; //half height
     this.decryptWindowWidth = 280;
-    this.logCount = 8;
+    this.logCount = 12;
     this.startNewRandomTask();
 
   }
@@ -257,7 +257,7 @@ class FileDecryptWindow extends GsWindow{
 
   drawDecryptionLog(){
     this.buffer.push();
-    this.buffer.translate(0, this.decryptWindowHeight);
+    this.buffer.translate(0 + 12, this.decryptWindowHeight + 12);
     this.buffer.textFont("consolas");
     this.buffer.fill(255, 0, 0);
     this.buffer.textSize(12);
@@ -265,15 +265,23 @@ class FileDecryptWindow extends GsWindow{
     this.buffer.textAlign("left", "top");        
     this.buffer.textStyle(BOLD);
     let content = "";
-    let windowLogHead = 0;
-    let warpCount = 40;//floor(this.sizeX / 8);
+    //let windowLogHead = 0;
+    let windowLogHead = [];
+    let warpCount = 36;//floor(this.sizeX / 8);
     for(let i = 0; i < this.windowLog.length; i++){
       let current = this.windowLog[i];
       while(current.length > warpCount){
-        content += current.substring(0, warpCount) + "\n";
+        let substr = current.substring(0, warpCount);
+        windowLogHead.push(substr.trim());
         current = current.substring(warpCount);
       }
-      content += current + "\n";
+      windowLogHead.push(current);
+    }
+    while(windowLogHead.length > 9){
+      windowLogHead.shift(0);
+    }
+    for(let i = 0; i < windowLogHead.length; i++){
+      content += windowLogHead[i] + "\n";
     }
     //console.log(content);
     this.buffer.text(content, 0, 0);
