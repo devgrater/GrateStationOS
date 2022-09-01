@@ -15,7 +15,7 @@ class GameOfLifeWindow extends GsWindow{
         this.golBuffer = createGraphics(this.cellCountX, this.cellCountY); //alter this directly:
         this.golBuffer.loadPixels();
         for(let i = 0; i < this.cellCountX * this.cellCountY * 4; i++){
-                this.golBuffer.pixels[i] = 255;
+                this.golBuffer.pixels[i] = i % 4 === 3? 255 : 0;
         }
         this.golBuffer.updatePixels();
         this.cellGridBuffer = createGraphics(this.sizeX, this.sizeY);
