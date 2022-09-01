@@ -67,7 +67,7 @@ class GameOfLifeWindow extends GsWindow{
         this.golBuffer.pixels[rindex    ] = nval * 12;
         this.golBuffer.pixels[rindex + 1] = 0;
         this.golBuffer.pixels[rindex + 2] = 0;
-        this.golBuffer.pixels[rindex * 3] = 255;
+        //this.golBuffer.pixels[rindex * 3] = 1;
     }
 
     drawGolCel(px, py, neutrient){
@@ -254,10 +254,14 @@ class GameOfLifeWindow extends GsWindow{
 
     drawWindowContent(dt){
         //this.buffer.push();
-        //this.buffer.noSmooth();
+        this.buffer.blendMode(BLEND);
+        this.buffer.background(0);
+        this.buffer.noSmooth();
         //this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
-        image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
-
+        this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
+        this.buffer.smooth();
+        this.buffer.blendMode(LIGHTEST);
+        this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
         //this.buffer.background(0);
         //this.drawGolCel(this.cellCountX, this.cellCountY);
         //image(this.buffer, 0, 0, this.sizeX, this.sizeY);
