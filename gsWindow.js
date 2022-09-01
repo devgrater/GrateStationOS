@@ -107,6 +107,10 @@ class GsWindow{
   
   drawWindowContent(dt){
     this.buffer.background(0);
+    this.renderBuffer();
+  }
+
+  renderBuffer(){
     image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
   

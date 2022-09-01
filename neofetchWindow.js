@@ -52,8 +52,8 @@ class NeofetchWindow extends GsWindow{
         this.buffer.line(xCoord + halfWidth, this.sizeY, xCoord / zDistFar + halfWidth, this.sizeY - this.sizeY / zDistFar);
       }
     this.drawNeofetch();
-
-    image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+    this.renderBuffer();
+    //image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
   
   drawNeofetch(){

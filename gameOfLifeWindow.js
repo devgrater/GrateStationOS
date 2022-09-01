@@ -34,7 +34,7 @@ class GameOfLifeWindow extends GsWindow{
             let cellXPos = px * this.cellSize;
             let cellYPos = py * this.cellSize;
             //let cellValue = this.bufferA[j * ccx + i];
-            this.buffer.fill(cellValue * 255, 0, 0); 
+            this.buffer.fill(cellValue * 192, 0, 0); 
             this.buffer.stroke((1 - cellValue) * 64, 0, 0);
             this.buffer.strokeWeight(1);
             this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
@@ -154,7 +154,8 @@ class GameOfLifeWindow extends GsWindow{
     drawWindowContent(dt){
         //this.buffer.background(0);
         //this.drawGolCel(this.cellCountX, this.cellCountY);
-        image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+        //image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+        this.renderBuffer();
     }
   }
   

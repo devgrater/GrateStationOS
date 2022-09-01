@@ -303,7 +303,8 @@ class FileDecryptWindow extends GsWindow{
     this.drawDecryptionWindow();
     this.drawDecryptionLog();
     this.buffer.pop();
-    image(this.buffer, 0, 0, this.sizeX, this.sizeY);
+    this.renderBuffer();
+    //image(this.buffer, 0, 0, this.sizeX, this.sizeY);
   }
 
   update(dt){
