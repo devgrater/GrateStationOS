@@ -4,7 +4,7 @@ class GameOfLifeWindow extends GsWindow{
         //create grids, game of life.
         this.cellSize = 10;
         this.timeUntilNextStep = 0;
-        this.stepTime = 0.05;
+        this.stepTime = 0.03;
         this.cellCountX = floor(this.sizeX / this.cellSize);
         this.cellCountY = floor(this.sizeY / this.cellSize);
         //two buffers, flattened.
@@ -45,10 +45,11 @@ class GameOfLifeWindow extends GsWindow{
     drawGolCel(px, py, cellValue, isNewLife, isNewDead, neutrient){
         let cellXPos = px * this.cellSize;
         let cellYPos = py * this.cellSize;
-        let golFill = neutrient * 16;
+        let neutrientNormalized = neutrient / 16;
+        let golFill = neutrientNormalized * 192;
         this.buffer.fill(golFill, 0, 0);
         //this.buffer.stroke((1 - cellValue) * 32 + 64 * isNewDead, 0, 0);
-        this.buffer.strokeWeight(0.25);
+        this.buffer.strokeWeight(0.1);
         this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
     }
 
@@ -123,32 +124,12 @@ class GameOfLifeWindow extends GsWindow{
                     for(let ox = -1; ox <= 1; ox++){
                         for(let oy = -1; oy <= 1; oy++){
                             let increment = 1;
-                            if(ox === 0) increment += 1;
-                            if(oy === 0) increment += 1;
+                            //if(ox === 0) increment += 1;
+                            //if(oy === 0) increment += 1;
                             this.addToNeighbourBuffer(i + ox, j + oy, ccx, ccy, this.neutrientBuffer, increment);
                         }
                     }
                 }
-                //let currentNeutrient = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
-                /*if(isNewDead === 1){
-                    for(let ox = -1; ox <= 1; ox++){
-                        for(let oy = -1; oy <= 1; oy++){
-                            this.addToNeighbourBuffer(i + ox, j + oy, ccx, ccy, this.neutrientBuffer, 1);
-                        }
-                    }
-                }
-
-
-                if(currentNeutrient >= 8){
-                    currentNeutrient = 8;
-                    currentCelval = 1;
-                    isNewLife = 1;
-                }
-                currentNeutrient = floor(currentNeutrient * 0.5);
-
-                if(currentNeutrient < 0) currentNeutrient = 0;*/
-
-
 
 
                 //write to grid b:
@@ -161,7 +142,8 @@ class GameOfLifeWindow extends GsWindow{
         for(let i = 0; i < ccx; i++) {
             for (let j = 0; j < ccy; j++) {
                 let currentNeutrient = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
-                currentNeutrient = floor(currentNeutrient * 0.8);
+                currentNeutrient -= 1;
+
                 currentNeutrient = constrain(currentNeutrient, 0, 16);
                 let cellIndex = j * ccx + i;
                 this.neutrientBuffer[cellIndex] = currentNeutrient;
