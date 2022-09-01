@@ -31,17 +31,40 @@ class GsWindow{
     
   }
   
-  onMouseDownHeadbar(){
+  onMouseDownHeadbar(mx, my, pressedButton){
     this.isMouseDragging = true;
   }
   
-  onMouseUpHeadbar(){
+  onMouseUpHeadbar(mx, my, pressedButton){
     this.isMouseDragging = false;
+  }
+
+  onMouseDownWindow(mx, my, pressedButton){
+
+  }
+
+  onMouseUpWindow(mx, my, pressedButton){
+
+  }
+
+  onMouseMoveWindow(mx, my){
+
   }
   
   onMouseMoved(mx, my, px, py){
     if(this.isMouseDragging){
       this.handleWindowDrag(mx - px, my - py);
+    }
+    else{
+      this.onMouseMoveWindow(mx, my);
+    }
+  }
+
+  getPositionRelativeToWindow(mx, my){
+    let currentWindow = this;
+    return {
+      x: mx - (currentWindow.posX - this.sizeX * 0.5),
+      y: my - (currentWindow.posY - this.sizeY * 0.5)
     }
   }
   

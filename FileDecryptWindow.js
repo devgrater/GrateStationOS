@@ -215,7 +215,7 @@ class FileDecryptWindow extends GsWindow{
           
           for(let j = 0; j < 4; j++){
             let currentTime = floor((this.timeElapsedSinceLastJob * 16 - i - j) % 16);
-            let brightnessOffset = (currentTime / 16) * 32;
+            let brightnessOffset = (currentTime / 16) * 16;
             let xPos = i / 8 * this.decryptWindowWidth;
             let yPos = j / 4 * this.decryptWindowHeight;
             let showedBits = "";

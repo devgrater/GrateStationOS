@@ -8,8 +8,11 @@ function setup() {
   system.initialize();
   let template = new NeofetchWindow("GrateStation OS v1.0", 512, 512, 240, 120);
   let tw = new FileDecryptWindow("Test Window", 256, 256, 280, 240);
+  let gol = new GameOfLifeWindow("Conway's Game of Life", 384, 384, 280, 240);
   wm.startWindowInstance(template);
+  wm.startWindowInstance(gol);
   wm.startWindowInstance(tw);
+  
   
 }
 
@@ -21,9 +24,9 @@ function draw() {
 }
 
 function mousePressed(){
-  wm.onMousePressed(mouseX, mouseY);
+  wm.onMousePressed(mouseX, mouseY, mouseButton);
 }
 
 function mouseReleased(){
-  wm.onMouseReleased(mouseX, mouseY);
+  wm.onMouseReleased(mouseX, mouseY, mouseButton);
 }

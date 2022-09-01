@@ -31,14 +31,20 @@ class WindowManager {
     }
   }
 
-  onMousePressed(mx, my){
+  onMousePressed(mx, my, pressedButton){
     //for each window, check if its clicked.
     for(let i = 0; i < this.activeWindows.length; i++){
       let w = this.activeWindows[i];
       let isValidClick = w.isValidClickRange(mx, my);
       let isHeadbarClick = w.isHeadbarClickRange(my);
-      if(isValidClick && isHeadbarClick){
-        w.onMouseDownHeadbar();
+      if(isValidClick){
+        if(isHeadbarClick){
+          w.onMouseDownHeadbar(mx, my, pressedButton);
+        }
+        else{
+          w.onMouseDownWindow(mx, my, pressedButton);
+        }
+        
       }
       if(isValidClick){
         //move window to front:
@@ -49,10 +55,11 @@ class WindowManager {
     }
   }
   
-  onMouseReleased(mx, my){
+  onMouseReleased(mx, my, releasedButton){
     for(let i = 0; i < this.activeWindows.length; i++){
       let w = this.activeWindows[i];
       w.onMouseUpHeadbar();
+      w.onMouseUpWindow();
     }
   }
   
