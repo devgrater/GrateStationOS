@@ -2,17 +2,17 @@ let wm = new WindowManager();
 let system = new SystemManager();
 let theme = new ThemeManager();
 const themeStyle = {
-  windowColor: [0, 255, 0],
+  windowColor: [255, 0, 0],
   headbarTextColor: [0, 0, 0],
-  accentColor: [0, 255, 0],
-  primaryColor: [0, 208, 0],
-  secondaryColor: [0, 192, 0],
-  tertiaryColor: [0, 128, 0],
-  quaternaryColor: [0, 96, 0],
-  fifthColor: [0, 64, 0],
+  accentColor: [255, 0, 0],
+  primaryColor: [208, 0, 0],
+  secondaryColor: [192, 0, 0],
+  tertiaryColor: [128, 128, 0],
+  quaternaryColor: [96, 0, 0],
+  fifthColor: [64, 0, 0],
   backgroundColor: [0, 0, 0],
-  minUnit: [0, 16, 0],
-  colorRatio: [0, 1, 0]//minimal unit
+  minUnit: [16, 0, 0],
+  colorRatio: [1, 0, 0]//minimal unit
 }
 
 function setup() {

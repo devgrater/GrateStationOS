@@ -251,7 +251,6 @@ class FileDecryptWindow extends GsWindow{
                 let brightnessOffsetArray = mulColorArray(themeStyle.minUnit, brightnessOffset);
                 let brightColor = addColorArray(themeStyle.secondaryColor, brightnessOffsetArray);
                 let darkColor = addColorArray(mulColorArray(themeStyle.colorRatio, 128 * levelOfCorruption), brightnessOffsetArray);
-                console.log(darkColor)
                 this.buffer.fill(lerpColorArray(brightColor, darkColor, lerpProgress));
                   this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
                   this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
