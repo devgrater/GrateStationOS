@@ -12,6 +12,8 @@ class GameOfLifeWindow extends GsWindow{
         this.toggleMode = 0;
         this.isPaused = false;
         this.initializeGolBuffer(this.cellCountX, this.cellCountY);
+        //this.glintRange = 100;
+        //this.cellGridBuffer = createGraphics(this.glintRange, this.glintRange);
     }
     
     initializeGolBuffer(ccx, ccy){
