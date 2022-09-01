@@ -15,20 +15,14 @@ class GameOfLifeWindow extends GsWindow{
         this.golBuffer = createGraphics(this.cellCountX, this.cellCountY); //alter this directly:
         this.golBuffer.loadPixels();
         for(let i = 0; i < this.cellCountX * this.cellCountY * 4; i++){
-            if(i % 4 === 3){
                 this.golBuffer.pixels[i] = 255;
-            }
-            else{
-                this.golBuffer.pixels[i] = 0;
-            }
-
         }
         this.golBuffer.updatePixels();
         this.cellGridBuffer = createGraphics(this.sizeX, this.sizeY);
         this.cellGridBuffer.background(255);
             this.cellGridBuffer.push();
             this.cellGridBuffer.stroke(0);
-            this.cellGridBuffer.strokeWeight(8);
+            this.cellGridBuffer.strokeWeight(7);
                 for(let i = 0; i <= this.cellCountX; i++){
                     let lineXPos = i * this.cellSize;
                     this.cellGridBuffer.line(lineXPos, 0, lineXPos, this.sizeY);
@@ -98,7 +92,7 @@ class GameOfLifeWindow extends GsWindow{
     }
 
     updateGolCel(ccx, ccy){
-        for(let i = 0; i < 20; i++){
+        for(let i = 0; i < 10; i++){
             let rx = random(0, ccx);
             let ry = random(0, ccy);
             let index = floor(ry * ccx + rx);
