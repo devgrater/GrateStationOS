@@ -45,11 +45,10 @@ class GameOfLifeWindow extends GsWindow{
     drawGolCel(px, py, cellValue, isNewLife, isNewDead, neutrient){
         let cellXPos = px * this.cellSize;
         let cellYPos = py * this.cellSize;
-        let neutrientNormalized = neutrient / 16;
-        let golFill = neutrientNormalized * 192;
+        let golFill = neutrient * 12;
         this.buffer.fill(golFill, 0, 0);
         //this.buffer.stroke((1 - cellValue) * 32 + 64 * isNewDead, 0, 0);
-        this.buffer.strokeWeight(0.1);
+        this.buffer.strokeWeight(0.25);
         this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
     }
 
