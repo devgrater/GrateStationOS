@@ -194,7 +194,7 @@ class FileDecryptWindow extends GsWindow{
   drawDecryptionWindow(){
     this.buffer.push();
       this.buffer.textFont("consolas");
-      this.buffer.fill(255, 0, 0);
+      this.buffer.fill(themeStyle.windowColor);
       this.buffer.textSize(12);
       this.buffer.textAlign("center", "center");        
       this.buffer.textStyle(BOLD);
@@ -215,7 +215,7 @@ class FileDecryptWindow extends GsWindow{
           
           for(let j = 0; j < 4; j++){
             let currentTime = floor((this.timeElapsedSinceLastJob * 16 - i - j) % 16);
-            let brightnessOffset = (currentTime / 16) * 16;
+            let brightnessOffset = currentTime / 16;
             let xPos = i / 8 * this.decryptWindowWidth;
             let yPos = j / 4 * this.decryptWindowHeight;
             let showedBits = "";
@@ -232,27 +232,34 @@ class FileDecryptWindow extends GsWindow{
                 showedBits += "_";//spinner.charAt(currentTime);
               }
             }
-            if(showedCount == 5){
+            if(showedCount === 5){
               this.buffer.push()
-              this.buffer.fill(192 + brightnessOffset, 0, 0);
+              let brightnessOffsetArray = mulColorArray(themeStyle.minUnit, brightnessOffset);
+
+              this.buffer.fill(addColorArray(themeStyle.secondaryColor, brightnessOffsetArray));
               
               
               this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
               this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
               this.buffer.pop();
-              this.buffer.fill(0, 0, 0);
+              this.buffer.fill(themeStyle.backgroundColor);
             }
             else{
               if(levelOfCorruption < 1.0){
                 this.buffer.push()
-                this.buffer.fill(lerp(192 + brightnessOffset, 128 * levelOfCorruption + brightnessOffset, lerpProgress), 0, 0);
+
+                let brightnessOffsetArray = mulColorArray(themeStyle.minUnit, brightnessOffset);
+                let brightColor = addColorArray(themeStyle.secondaryColor, brightnessOffsetArray);
+                let darkColor = addColorArray(mulColorArray(themeStyle.colorRatio, 128 * levelOfCorruption), brightnessOffsetArray);
+                console.log(darkColor)
+                this.buffer.fill(lerpColorArray(brightColor, darkColor, lerpProgress));
                   this.buffer.translate(-gridWidth * 0.5, -gridHeight * 0.5);
                   this.buffer.rect(xPos, yPos, gridWidth, gridHeight);
                 this.buffer.pop();
-                this.buffer.fill(255, 0, 0);
+                this.buffer.fill(themeStyle.accentColor);
               }
               else{
-                this.buffer.fill(255 * showedCount / 5, 0, 0);
+                this.buffer.fill(mulColorArray(themeStyle.accentColor, showedCount * 0.2));
               }
               
             }
@@ -265,9 +272,9 @@ class FileDecryptWindow extends GsWindow{
 
   drawDecryptionLog(){
     this.buffer.push();
-    this.buffer.translate(0 + 12, this.decryptWindowHeight + 12);
+    this.buffer.translate(12, this.decryptWindowHeight + 12);
     this.buffer.textFont("consolas");
-    this.buffer.fill(255, 0, 0);
+    this.buffer.fill(themeStyle.accentColor);
     this.buffer.textSize(12);
     this.buffer.textWrap(CHAR);
     this.buffer.textAlign("left", "top");        
@@ -311,24 +318,6 @@ class FileDecryptWindow extends GsWindow{
     super.update(dt);
     this.updateTaskProgress(dt);
   }
-  
-  drawNeofetch(){
-      this.buffer.push();
-      //line(
-        this.buffer.textFont("consolas");
-        this.buffer.textAlign(CENTER, CENTER);
-        this.buffer.fill(255, 0, 0);
-        //this.buffer.textStyle(BOLD);
-        this.buffer.push();
-          this.buffer.textSize(16);
-          
-          this.buffer.text("GrateStation OS", this.sizeX * 0.5, this.sizeY * 0.5 - 8);
-        this.buffer.pop();
-        this.buffer.textSize(12);
-        this.buffer.text("By DeveloGrater", this.sizeX * 0.5, this.sizeY * 0.5 + 8);
-      this.buffer.pop();
-    this.buffer.pop();
-  }
-  
+
  
 }

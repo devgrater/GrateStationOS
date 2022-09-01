@@ -70,7 +70,7 @@ class GameOfLifeWindow extends GsWindow{
                 this.drawGolCel(i, j, currentCelval, 0, 0, currentNeutrientVal);*/
                 let index = (i + j * ccx);
                 let neutrientVal = this.neutrientBuffer[index];
-                this.setGolPixel(index, neutrientVal);
+                this.setGolPixel(index, neutrientVal / 16);
             }
         }
         this.golBuffer.updatePixels();
@@ -79,20 +79,10 @@ class GameOfLifeWindow extends GsWindow{
     setGolPixel(index, nval){
 
         let rindex = index * 4;
-        this.golBuffer.pixels[rindex    ] = nval * 12;
-        this.golBuffer.pixels[rindex + 1] = 0;
-        this.golBuffer.pixels[rindex + 2] = 0;
+        this.golBuffer.pixels[rindex    ] = nval * themeStyle.secondaryColor[0];
+        this.golBuffer.pixels[rindex + 1] = nval * themeStyle.secondaryColor[1];
+        this.golBuffer.pixels[rindex + 2] = nval * themeStyle.secondaryColor[2];
         //this.golBuffer.pixels[rindex * 3] = 1;
-    }
-
-    drawGolCel(px, py, neutrient){
-        let cellXPos = px * this.cellSize;
-        let cellYPos = py * this.cellSize;
-        let golFill = neutrient * 12;
-        this.buffer.fill(golFill, 0, 0);
-        //this.buffer.stroke((1 - cellValue) * 32 + 64 * isNewDead, 0, 0);
-        this.buffer.strokeWeight(0.25);
-        this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
     }
 
     update(dt){
@@ -188,10 +178,11 @@ class GameOfLifeWindow extends GsWindow{
                 currentNeutrient -= 1;
 
                 currentNeutrient = constrain(currentNeutrient, 0, 16);
+                let neutrientNormalized = currentNeutrient / 16;
                 let cellIndex = j * ccx + i;
                 this.neutrientBuffer[cellIndex] = currentNeutrient;
                 //this.drawGolCel(i, j, currentNeutrient);
-                this.setGolPixel(cellIndex, currentNeutrient);
+                this.setGolPixel(cellIndex, neutrientNormalized);
             }
         }
         this.golBuffer.updatePixels();

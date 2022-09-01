@@ -20,7 +20,7 @@ class NeofetchWindow extends GsWindow{
       this.buffer.noFill();
       
       this.headPercentage = (this.lifespan * this.linespeed) % this.lineDst;
-      this.buffer.stroke(96, 0, 0);
+      this.buffer.stroke(themeStyle.quaternaryColor);
       let basePos;
       for(let i = 0; i < this.lineCount; i++){
         let fraction = 1 - i / this.lineCount;
@@ -61,7 +61,7 @@ class NeofetchWindow extends GsWindow{
       //line(
         this.buffer.textFont("consolas");
         this.buffer.textAlign(CENTER, CENTER);
-        this.buffer.fill(255, 0, 0);
+        this.buffer.fill(themeStyle.windowColor);
         //this.buffer.textStyle(BOLD);
         this.buffer.push();
           this.buffer.textSize(16);

@@ -76,9 +76,9 @@ class GsWindow{
   drawWindowBackPanel(cornerX, cornerY){
     
     push();
-      stroke(255, 0, 0);
+      stroke(themeStyle.windowColor);
       strokeWeight(1);
-      fill(255, 0, 0);
+      fill(themeStyle.windowColor);
       push();
         //main window
         noFill();//fill(0);
@@ -90,7 +90,7 @@ class GsWindow{
   
   drawExitIcon(cornerX, cornerY){
     push();
-      fill(0);
+      fill(themeStyle.headbarTextColor);
       rect(cornerX + this.sizeX - 16, cornerY - this.headerbarSize + 4, 12, 12);
     pop();
   }
@@ -99,7 +99,7 @@ class GsWindow{
     textAlign(LEFT, CENTER);
     textStyle(BOLD);
     textSize(12);
-    fill(0);
+    fill(themeStyle.headbarTextColor);
     text(this.title, cornerX + 10.0, cornerY - this.headerbarSize * 0.5);
   }
   
