@@ -26,28 +26,30 @@ class GameOfLifeWindow extends GsWindow{
                 this.bufferA.push(gridValue);
                 this.bufferB.push(gridValue);
                 this.neutrientBuffer.push(0);
+                //everytime a cell dies, add 2 neutrient to all neighbours and itself
+                //6 neutrient creates a new life
             }
         }
     }
 
-    redrawGeoCell(ccx, ccy){
+    redrawGolCel(ccx, ccy){
         for(let i = 0; i < ccx; i++){
             for(let j = 0; j < ccy; j++){
-                let currentCelval = this.getCellValue(i, j, ccx, ccy);
-                this.drawGolCel(i, j, currentCelval, 0, 0);
+                let currentCelval = this.getCellValue(i, j, ccx, ccy, this.bufferA);
+                let currentNeutrientVal = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
+                this.drawGolCel(i, j, currentCelval, 0, 0, currentNeutrientVal);
             }
         }
     }
 
-    drawGolCel(px, py, cellValue, isNewLife, isNewDead){
-            let cellXPos = px * this.cellSize;
-            let cellYPos = py * this.cellSize;
-            //let cellValue = this.bufferA[j * ccx + i];
-            let randomGridValue = random();
-            this.buffer.fill(cellValue * 192 + 32 * isNewLife, 0, 0); 
-            this.buffer.stroke((1 - cellValue) * 32 + 64 * isNewDead, 0, 0);
-            this.buffer.strokeWeight(1);
-            this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
+    drawGolCel(px, py, cellValue, isNewLife, isNewDead, neutrient){
+        let cellXPos = px * this.cellSize;
+        let cellYPos = py * this.cellSize;
+        let golFill = neutrient * 16;
+        this.buffer.fill(golFill, 0, 0);
+        //this.buffer.stroke((1 - cellValue) * 32 + 64 * isNewDead, 0, 0);
+        this.buffer.strokeWeight(0.25);
+        this.buffer.rect(cellXPos, cellYPos, this.cellSize, this.cellSize);
     }
 
     update(dt){
@@ -63,20 +65,31 @@ class GameOfLifeWindow extends GsWindow{
     }
 
     updateGolCel(ccx, ccy){
+        for(let i = 0; i < 20; i++){
+            let rx = random(0, ccx);
+            let ry = random(0, ccy);
+            let index = floor(ry * ccx + rx);
+            this.bufferA[index] = 1;
+        }
+
         //how?
         //for each grid...
         for(let i = 0; i < ccx; i++){
             for(let j = 0; j < ccy; j++){
+
+                //check neutrients from last round:
+                //if a life is born, the neutrient is all removed.
+
 
                 let cellVal = 0;
                 let currentCelval = 0;
                 for(let ox = -1; ox <= 1; ox++){
                     for(let oy = -1; oy <= 1; oy++){
                         if(ox === 0 && oy === 0){
-                            currentCelval = this.getCellValue(i, j, ccx, ccy);
+                            currentCelval = this.getCellValue(i, j, ccx, ccy, this.bufferA);
                         }
                         else{
-                            cellVal += this.getCellValue(i + ox, j + oy, ccx, ccy);
+                            cellVal += this.getCellValue(i + ox, j + oy, ccx, ccy, this.bufferA);
                         }
                     }
                 }
@@ -103,10 +116,57 @@ class GameOfLifeWindow extends GsWindow{
                         currentCelval = 0;
                     }
                 }
-                this.drawGolCel(i, j, currentCelval, isNewLife, isNewDead);
+
+
+                //chemtrail:
+                if(isNewDead === 1){
+                    for(let ox = -1; ox <= 1; ox++){
+                        for(let oy = -1; oy <= 1; oy++){
+                            let increment = 1;
+                            if(ox === 0) increment += 1;
+                            if(oy === 0) increment += 1;
+                            this.addToNeighbourBuffer(i + ox, j + oy, ccx, ccy, this.neutrientBuffer, increment);
+                        }
+                    }
+                }
+                //let currentNeutrient = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
+                /*if(isNewDead === 1){
+                    for(let ox = -1; ox <= 1; ox++){
+                        for(let oy = -1; oy <= 1; oy++){
+                            this.addToNeighbourBuffer(i + ox, j + oy, ccx, ccy, this.neutrientBuffer, 1);
+                        }
+                    }
+                }
+
+
+                if(currentNeutrient >= 8){
+                    currentNeutrient = 8;
+                    currentCelval = 1;
+                    isNewLife = 1;
+                }
+                currentNeutrient = floor(currentNeutrient * 0.5);
+
+                if(currentNeutrient < 0) currentNeutrient = 0;*/
+
+
+
+
                 //write to grid b:
                 let cellIndex = j * ccx + i;
                 this.bufferB[cellIndex] = currentCelval;
+
+            }
+        }
+
+        for(let i = 0; i < ccx; i++) {
+            for (let j = 0; j < ccy; j++) {
+                let currentNeutrient = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
+                currentNeutrient = floor(currentNeutrient * 0.8);
+                currentNeutrient = constrain(currentNeutrient, 0, 16);
+                let cellIndex = j * ccx + i;
+                this.neutrientBuffer[cellIndex] = currentNeutrient;
+                this.drawGolCel(i, j, 0, 0, 0, currentNeutrient);
+
             }
         }
         //swap ab:
@@ -115,13 +175,23 @@ class GameOfLifeWindow extends GsWindow{
         this.bufferB = temp;
     }
     
-    getCellValue(posX, posY, ccx, ccy){
+    getCellValue(posX, posY, ccx, ccy, buff){
         if(posX < 0 || posY < 0 || posX >= ccx || posY >= ccy){
             return 0;
         }
         else{
             let cellIndex = posY * ccx + posX;
-            return this.bufferA[cellIndex];
+            return buff[cellIndex];
+        }
+    }
+
+    addToNeighbourBuffer(posX, posY, ccx, ccy, buff, val){
+        if(posX < 0 || posY < 0 || posX >= ccx || posY >= ccy){
+            return;
+        }
+        else{
+            let cellIndex = posY * ccx + posX;
+            buff[cellIndex] = buff[cellIndex] + val;
         }
     }
 
@@ -166,7 +236,7 @@ class GameOfLifeWindow extends GsWindow{
             let mouseIndex = this.getMouseCurrentIndex(relativeMouse.x, relativeMouse.y);
             if(mouseIndex > 0){
                 this.bufferA[mouseIndex] = this.toggleMode;
-                this.redrawGeoCell(this.cellCountX, this.cellCountY);
+                this.redrawGolCel(this.cellCountX, this.cellCountY);
             }
         }
     }
