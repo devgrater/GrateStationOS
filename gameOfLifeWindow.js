@@ -12,6 +12,18 @@ class GameOfLifeWindow extends GsWindow{
         this.toggleMode = 0;
         this.isPaused = false;
         this.initializeGolBuffer(this.cellCountX, this.cellCountY);
+        this.golBuffer = createGraphics(this.cellCountX, this.cellCountY); //alter this directly:
+        this.golBuffer.loadPixels();
+        for(let i = 0; i < this.cellCountX * this.cellCountY * 4; i++){
+            if(i % 4 === 3){
+                this.golBuffer.pixels[i] = 255;
+            }
+            else{
+                this.golBuffer.pixels[i] = 0;
+            }
+
+        }
+        this.golBuffer.updatePixels();
         //this.glintRange = 100;
         //this.cellGridBuffer = createGraphics(this.glintRange, this.glintRange);
     }
@@ -33,16 +45,32 @@ class GameOfLifeWindow extends GsWindow{
     }
 
     redrawGolCel(ccx, ccy){
+        this.golBuffer.loadPixels();
         for(let i = 0; i < ccx; i++){
             for(let j = 0; j < ccy; j++){
-                let currentCelval = this.getCellValue(i, j, ccx, ccy, this.bufferA);
-                let currentNeutrientVal = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
-                this.drawGolCel(i, j, currentCelval, 0, 0, currentNeutrientVal);
+                //this.golBuffer[]
+                //let currentNeutrientVal = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
+                /*let currentCelval = this.getCellValue(i, j, ccx, ccy, this.bufferA);
+
+                this.drawGolCel(i, j, currentCelval, 0, 0, currentNeutrientVal);*/
+                let index = (i + j * ccx);
+                let neutrientVal = this.neutrientBuffer[index];
+                this.setGolPixel(index, neutrientVal);
             }
         }
+        this.golBuffer.updatePixels();
     }
 
-    drawGolCel(px, py, cellValue, isNewLife, isNewDead, neutrient){
+    setGolPixel(index, nval){
+
+        let rindex = index * 4;
+        this.golBuffer.pixels[rindex    ] = nval * 12;
+        this.golBuffer.pixels[rindex + 1] = 0;
+        this.golBuffer.pixels[rindex + 2] = 0;
+        this.golBuffer.pixels[rindex * 3] = 255;
+    }
+
+    drawGolCel(px, py, neutrient){
         let cellXPos = px * this.cellSize;
         let cellYPos = py * this.cellSize;
         let golFill = neutrient * 12;
@@ -138,6 +166,7 @@ class GameOfLifeWindow extends GsWindow{
             }
         }
 
+        this.golBuffer.loadPixels();
         for(let i = 0; i < ccx; i++) {
             for (let j = 0; j < ccy; j++) {
                 let currentNeutrient = this.getCellValue(i, j, ccx, ccy, this.neutrientBuffer);
@@ -146,10 +175,11 @@ class GameOfLifeWindow extends GsWindow{
                 currentNeutrient = constrain(currentNeutrient, 0, 16);
                 let cellIndex = j * ccx + i;
                 this.neutrientBuffer[cellIndex] = currentNeutrient;
-                this.drawGolCel(i, j, 0, 0, 0, currentNeutrient);
-
+                //this.drawGolCel(i, j, currentNeutrient);
+                this.setGolPixel(cellIndex, currentNeutrient);
             }
         }
+        this.golBuffer.updatePixels();
         //swap ab:
         let temp = this.bufferA;
         this.bufferA = this.bufferB;
@@ -223,6 +253,11 @@ class GameOfLifeWindow extends GsWindow{
     }
 
     drawWindowContent(dt){
+        //this.buffer.push();
+        //this.buffer.noSmooth();
+        //this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
+        image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
+
         //this.buffer.background(0);
         //this.drawGolCel(this.cellCountX, this.cellCountY);
         //image(this.buffer, 0, 0, this.sizeX, this.sizeY);
