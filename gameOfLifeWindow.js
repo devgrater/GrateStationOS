@@ -28,7 +28,7 @@ class GameOfLifeWindow extends GsWindow{
         this.cellGridBuffer.background(255);
             this.cellGridBuffer.push();
             this.cellGridBuffer.stroke(0);
-            this.cellGridBuffer.strokeWeight(0.25);
+            this.cellGridBuffer.strokeWeight(8);
                 for(let i = 0; i <= this.cellCountX; i++){
                     let lineXPos = i * this.cellSize;
                     this.cellGridBuffer.line(lineXPos, 0, lineXPos, this.sizeY);
@@ -271,10 +271,8 @@ class GameOfLifeWindow extends GsWindow{
         //this.buffer.push();
         this.buffer.blendMode(BLEND);
         this.buffer.background(0);
-        this.buffer.noSmooth();
         //this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
         this.buffer.image(this.golBuffer, 0, 0, this.sizeX, this.sizeY);
-        this.buffer.smooth();
         this.buffer.blendMode(MULTIPLY);
         this.buffer.image(this.cellGridBuffer, 0, 0, this.sizeX, this.sizeY);
         //this.buffer.background(0);
