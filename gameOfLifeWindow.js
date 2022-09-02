@@ -4,7 +4,7 @@ class GameOfLifeWindow extends GsWindow{
         //create grids, game of life.
         this.cellSize = 10;
         this.timeUntilNextStep = 0;
-        this.stepTime = 0.03;
+        this.stepTime = 0.1;
         this.cellCountX = floor(this.sizeX / this.cellSize);
         this.cellCountY = floor(this.sizeY / this.cellSize);
         //two buffers, flattened.
