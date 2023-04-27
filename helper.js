@@ -23,3 +23,11 @@ function mulColorArray(c1, cs){
         c1[2] * cs
     ]
 }
+
+function normalizeColors(c1){
+    return[
+        c1[0] / 256.0,
+        c1[1] / 256.0,
+        c1[2] / 256.0
+    ]
+}
