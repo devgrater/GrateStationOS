@@ -1,6 +1,5 @@
 let wm = new WindowManager();
 let system = new SystemManager();
-let theme = new ThemeManager();
 //red theme
 /*const themeStyle = {
   windowColor: [255, 0, 0],
@@ -31,21 +30,30 @@ const themeStyle = {
   colorRatio: [0, 1, 0]//minimal unit
 }
 
-function setup() {
-  textFont("consolas");
-  system.setWindowDimensions(windowWidth, windowHeight);
-  system.initialize();
+let applications = [];
+
+function preload(){
+
+
   let template = new NeofetchWindow("GrateStation OS v1.0", 512, 512, 240, 120);
   let tw = new FileDecryptWindow("Test Window", 256, 256, 280, 240);
   let gol = new GameOfLifeWindow("ChemTr4il Analyzer", 384, 384, 480, 240);
   let call = new IncomingCallWindow("Caller ID", 840, 320, 360, 240);
-  wm.startWindowInstance(template);
-  wm.startWindowInstance(gol);
-  wm.startWindowInstance(tw);
-  wm.startWindowInstance(call);
+  applications.push(template);
+  applications.push(tw);
+  applications.push(gol);
+  applications.push(call);
+}
 
-
-  
+function setup() {
+  system.setWindowDimensions(windowWidth, windowHeight);
+  system.initialize();
+  textFont("consolas");
+  //change the following to a for loop instead:
+  for(let i = 0; i < applications.length; i++){
+    let app = applications[i];
+    wm.startWindowInstance(app);
+  }
 }
 
 

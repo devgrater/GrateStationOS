@@ -1,7 +1,12 @@
 class GsWindow{
+
+  onWindowPreload(){
+
+  }
   constructor(title, posX, posY, sizeX, sizeY){
     this.windowSetup(title, posX, posY, sizeX, sizeY);
-    this.onWindowReady(); //your function goes here...
+    //this.onWindowReady(); //your function goes here...
+    this.onWindowPreload();
     console.log(title + " Ready");
   }
   

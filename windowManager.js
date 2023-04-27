@@ -23,6 +23,7 @@ class WindowManager {
   startWindowInstance(w){
     this._themeManager.applyThemeStyle(w);
     this.activeWindows.push(w);
+    w.onWindowReady();
   }
   
   onMouseMoved(mx, my, px, py){
