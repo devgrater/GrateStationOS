@@ -70,3 +70,7 @@ function mousePressed(){
 function mouseReleased(){
   wm.onMouseReleased(mouseX, mouseY, mouseButton);
 }
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
