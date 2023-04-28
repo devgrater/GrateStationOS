@@ -7,7 +7,7 @@ const themeStyle = {
   accentColor: [255, 0, 0],
   primaryColor: [208, 0, 0],
   secondaryColor: [192, 0, 0],
-  tertiaryColor: [128, 128, 0],
+  tertiaryColor: [128, 0, 0],
   quaternaryColor: [96, 0, 0],
   fifthColor: [64, 0, 0],
   backgroundColor: [0, 0, 0],

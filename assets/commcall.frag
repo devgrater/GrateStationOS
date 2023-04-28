@@ -18,14 +18,16 @@ void main() {
     flickerPhase1 = (flickerPhase1 + 1.0) * 0.5;
     flickerPhase2 = (flickerPhase2 + 1.0) * 0.5;
     float flickerPhase = (flickerPhase1 * 0.3 + flickerPhase2 * 0.7);
-    flickerPhase = flickerPhase * 0.3 + 0.7;
+    flickerPhase = flickerPhase * 0.1 + 0.9;
     vec4 texSample = texture2D(uSampler, uv);
     float gradient = (sin(uv.y * windowHeight + time * 40.0) + 1.0) * 0.5;
-    gradient = (gradient + 1.0) * 0.5;
+    gradient = (gradient + 1.0) * 0.5 * 0.3 + 0.7;
     texSample.xyz = gradient * flickerPhase * texSample.xyz;
     texSample.x *= tint.x;
     texSample.y *= tint.y;
     texSample.z *= tint.z;
 
-    gl_FragColor = texSample;
+    float dimGradient = 1.0 - pow(uv.y, 3.0);
+
+    gl_FragColor = vec4(dimGradient, dimGradient, dimGradient, 1.0) * texSample;
 }
