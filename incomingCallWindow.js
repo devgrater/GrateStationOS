@@ -3,7 +3,7 @@
 class IncomingCallWindow extends GsWindow{
 
     onWindowPreload(){
-        this.img = loadImage('assets/caller.png');
+        this.img = loadImage('assets/broker.png');
         this.grad = loadShader('assets/commcall.vert', 'assets/commcall.frag');
         //create a default speaker:
         let speaker = new Speaker('assets/caller.png', 'speaker',
@@ -86,8 +86,12 @@ class IncomingCallWindow extends GsWindow{
         if(this.fractLifespan > 3.1415926){
             this.fractLifespan -= 3.1415926;
             this.speakerText = this.speaker.nextLine()
-            if(this.speakerText === "")
+            if(this.speakerText === ""){
                 this.speaker.startOver();
+                this.speakerText = this.speaker.getCurrentText()
+            }
+
+
         }
     }
 }

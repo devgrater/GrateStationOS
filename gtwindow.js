@@ -1,7 +1,7 @@
 let wm = new WindowManager();
 let system = new SystemManager();
 //red theme
-/*const themeStyle = {
+const themeStyle = {
   windowColor: [255, 0, 0],
   headbarTextColor: [0, 0, 0],
   accentColor: [255, 0, 0],
@@ -13,9 +13,10 @@ let system = new SystemManager();
   backgroundColor: [0, 0, 0],
   minUnit: [16, 0, 0],
   colorRatio: [1, 0, 0]//minimal unit
-}*/
+}
 
 //green theme:
+/*
 const themeStyle = {
   windowColor: [0, 255, 0],
   headbarTextColor: [0, 0, 0],
@@ -28,7 +29,7 @@ const themeStyle = {
   backgroundColor: [0, 0, 0],
   minUnit: [0, 16, 0],
   colorRatio: [0, 1, 0]//minimal unit
-}
+}*/
 
 let applications = [];
 
