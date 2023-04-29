@@ -38,6 +38,10 @@ class Random3DObjectWindow extends GsWindow{
 
     }
 
+    rotateBaseCube(){
+
+    }
+
     windowSetup(title, posX, posY, sizeX, sizeY){
         this.isMouseDragging = false;
         this.title = title;
@@ -87,6 +91,10 @@ class Random3DObjectWindow extends GsWindow{
         camrdir[0] = camdir[2];
         camrdir[2] = -camdir[0];
 
+        let size = Math.sin(time * speedmul);
+        size += 1;
+        size *= 0.5 * 0.3;
+
         this.draw3DCubeInPerspective(campos, camdir, this.camudir, camrdir);
     }
 
@@ -106,16 +114,14 @@ class Random3DObjectWindow extends GsWindow{
         this.buffer.noSmooth();
         this.buffer.stroke(themeStyle.primaryColor);
 
-        let halfWidth = this.sizeX * 0.5;
-        let halfHeight = this.sizeY * 0.5;
-
+        let size = 256;
         for(let i = 0; i < this.pointOrder.length; i++){
             let linePoints = this.pointOrder[i];
             let pt0 = projectedPoints[linePoints[0]];
             let pt1 = projectedPoints[linePoints[1]];
             this.buffer.line(
-                pt0[0] * 256, pt0[1] * 256,
-                pt1[0] * 256, pt1[1] * 256
+                pt0[0] * size, pt0[1] * size,
+                pt1[0] * size, pt1[1] * size
             );
         }
     }
