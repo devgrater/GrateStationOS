@@ -1,6 +1,7 @@
 let wm = new WindowManager();
 let system = new SystemManager();
 //red theme
+/*
 const themeStyle = {
   windowColor: [255, 0, 0],
   headbarTextColor: [0, 0, 0],
@@ -13,10 +14,10 @@ const themeStyle = {
   backgroundColor: [0, 0, 0],
   minUnit: [16, 0, 0],
   colorRatio: [1, 0, 0]//minimal unit
-}
+}*/
 
 //green theme:
-/*
+
 const themeStyle = {
   windowColor: [0, 255, 0],
   headbarTextColor: [0, 0, 0],
@@ -29,7 +30,7 @@ const themeStyle = {
   backgroundColor: [0, 0, 0],
   minUnit: [0, 16, 0],
   colorRatio: [0, 1, 0]//minimal unit
-}*/
+}
 
 let applications = [];
 
@@ -40,10 +41,12 @@ function preload(){
   let tw = new FileDecryptWindow("Test Window", 256, 256, 280, 240);
   let gol = new GameOfLifeWindow("ChemTr4il Analyzer", 384, 384, 480, 240);
   let call = new IncomingCallWindow("Caller ID", 840, 320, 360, 240);
+  let cube3d = new Random3DObjectWindow("3D Cube", 1200, 480, 240, 320)
   applications.push(template);
   applications.push(tw);
   applications.push(gol);
   applications.push(call);
+  applications.push(cube3d);
 }
 
 function setup() {

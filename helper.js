@@ -31,3 +31,32 @@ function normalizeColors(c1){
         c1[2] / 256.0
     ]
 }
+
+function ptDistance(p1, p2){
+    let x = p2[0] - p1[0];
+    let y = p2[1] - p1[1];
+    let z = p2[2] - p1[2];
+    return Math.sqrt(x * x + y * y + z * z);
+}
+
+function ptDot(p1, v1){
+    return p1[0] * v1[0] + p1[1] * v1[1] + p1[2] * v1[2];
+}
+
+function ptDistanceProj(p1, p2, projv){
+    let x = p1[0] - p2[0];
+    let y = p1[1] - p2[1];
+    let z = p1[2] - p2[2];
+    return x * projv[0] + y * projv[1] + z * projv[2];
+}
+
+function ptProject(p1, dst, rtVec, upVec){
+    //z is discarded
+
+    return [ptDot(p1, rtVec) / dst, ptDot(p1, upVec) / dst];
+}
+
+function ptRotAndScale(p1, rotX, scale, tz){
+    //1. rot and scale
+
+}
