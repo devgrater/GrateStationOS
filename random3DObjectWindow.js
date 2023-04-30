@@ -15,6 +15,9 @@ class Random3DObjectWindow extends GsWindow{
             [-0.5, -1.5,  1],
             [ 0.5, -1.5,  1]
         ];
+        this.pointOrderVertex = [
+            1, 2, 7, 6, 3, 0, 5, 4, 1
+        ];
         this.pointOrder = [
             //[0,1],
             [1,2],
@@ -64,6 +67,10 @@ class Random3DObjectWindow extends GsWindow{
     drawWindowContent(dt) {
         this.buffer.background(0);
         this.buffer.push();
+        this.buffer.noFill();
+        this.buffer.strokeWeight(1);
+        this.buffer.noSmooth();
+        this.buffer.stroke(themeStyle.primaryColor);
         for(let i = 0; i < 10; i++){
             this.draw3DCubeAtTimeFrame(this.lifespan, i * 0.1 + 1)
         }
@@ -104,25 +111,18 @@ class Random3DObjectWindow extends GsWindow{
         for(let i = 0; i < this.points.length; i++){
             let curPoint = this.points[i];
             //project:
-            let projPointDst = ptDistanceProj(curPoint, campos, camdir);
-
-            let projPos = ptProject(curPoint, projPointDst, camrdir, camudir);
+            let projPos = ptDistanceProj(curPoint, campos, camdir, camrdir, camudir);
+            //let projPos = ptProject(curPoint, projPointDst;
             projectedPoints.push(projPos);
         }
-        this.buffer.noFill();
-        this.buffer.strokeWeight(1);
-        this.buffer.noSmooth();
-        this.buffer.stroke(themeStyle.primaryColor);
 
+        this.buffer.beginShape()
         let size = 256;
-        for(let i = 0; i < this.pointOrder.length; i++){
-            let linePoints = this.pointOrder[i];
-            let pt0 = projectedPoints[linePoints[0]];
-            let pt1 = projectedPoints[linePoints[1]];
-            this.buffer.line(
-                pt0[0] * size, pt0[1] * size,
-                pt1[0] * size, pt1[1] * size
-            );
+        for(let i = 0; i < this.pointOrderVertex.length; i++){
+            let linePoints = this.pointOrderVertex[i];
+            let curPoint = projectedPoints[linePoints];
+            this.buffer.vertex(curPoint[0] * size, curPoint[1] * size);
         }
+        this.buffer.endShape()
     }
 }
