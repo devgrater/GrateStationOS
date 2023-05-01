@@ -22,6 +22,7 @@ class SystemManager {
   
   initialize(){
     createCanvas(this.wwidth, this.wheight);
+
   }
   
   refreshScreen(){

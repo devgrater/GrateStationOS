@@ -126,3 +126,4 @@ class Random3DObjectWindow extends GsWindow{
         this.buffer.endShape()
     }
 }
+

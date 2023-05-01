@@ -8,6 +8,7 @@ class DvdPlayerWindow extends GsWindow{
         this.posY = posY;
         this.lifespan = 0;
         this.buffer = createGraphics(this.sizeX, this.sizeY, WEBGL);
+        this.buffer.noSmooth();
         this.windowState = "NORMAL";
     }
 
@@ -52,8 +53,10 @@ class DvdPlayerWindow extends GsWindow{
 
     drawBouncingDvdLogo(){
         this.buffer.tint(themeStyle.primaryColor)
+        let posX = this.dvdPosX - this.sizeX * 0.5;
+        let posY = this.dvdPosY - this.sizeY * 0.5;
         this.buffer.image(this.dvdImg,
-            this.dvdPosX - this.sizeX * 0.5, this.dvdPosY - this.sizeY * 0.5
+            Math.round(posX), Math.round(posY)
         );
     }
     drawWindowContent(dt) {

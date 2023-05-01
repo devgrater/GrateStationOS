@@ -33,10 +33,10 @@ const themeStyle = {
 }
 
 let applications = [];
-
+let font = null;
 function preload(){
 
-
+  font = loadFont("assets/consola.ttf");
   let template = new NeofetchWindow("GrateStation OS v1.0", 512, 512, 240, 120);
   let tw = new FileDecryptWindow("Test Window", 256, 256, 280, 240);
   let gol = new GameOfLifeWindow("ChemTr4il Analyzer", 384, 384, 480, 240);
@@ -54,7 +54,8 @@ function preload(){
 function setup() {
   system.setWindowDimensions(windowWidth, windowHeight);
   system.initialize();
-  textFont("consolas");
+
+  textFont(font);
   //change the following to a for loop instead:
   for(let i = 0; i < applications.length; i++){
     let app = applications[i];
