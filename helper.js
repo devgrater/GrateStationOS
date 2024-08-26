@@ -56,3 +56,8 @@ function ptRotAndScale(p1, rotX, scale, tz){
     //1. rot and scale
 
 }
+
+function normalize(x1, y1){
+    let mag = Math.sqrt(x1 * x1 + y1 * y1); //note that mag can never be 0 in our case
+    return [x1 / mag, y1 / mag];
+}

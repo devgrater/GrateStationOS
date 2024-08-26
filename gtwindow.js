@@ -43,12 +43,14 @@ function preload(){
   let call = new IncomingCallWindow("Caller ID", 840, 320, 360, 240);
   let cube3d = new Random3DObjectWindow("3D Cube", 1200, 480, 240, 320)
   let dvdPlayer = new DvdPlayerWindow("Insert DVD...", 1200, 240, 480, 240);
+  let doom3d = new SomeRandomGameWindow("BOOP", 1700, 480, 320, 240)
   applications.push(template);
   applications.push(tw);
   applications.push(gol);
   applications.push(call);
   applications.push(cube3d);
   applications.push(dvdPlayer);
+  applications.push(doom3d);
 }
 
 function setup() {
