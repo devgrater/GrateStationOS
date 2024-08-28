@@ -1,5 +1,12 @@
 class SomeRandomGameWindow extends GsWindow{
     //raycast engine
+
+
+    onWindowPreload() {
+        super.onWindowPreload();
+        this.logoImg = loadImage("assets/boop.png");
+
+    }
     onWindowReady() {
         super.onWindowReady();
         this.fov = 60; //sizeX rays over 80 degrees
@@ -22,6 +29,7 @@ class SomeRandomGameWindow extends GsWindow{
         this.playerAngleRad = this.playerAngle * 3.1415926 / 180;
         this.fovRad = this.fov * 3.1415926 / 180;
         this.init_worldMap();
+        this.spinDir = 1;
     }
 
     init_worldMap() {
@@ -170,10 +178,6 @@ class SomeRandomGameWindow extends GsWindow{
         let oneOverSizeX = 1 / this.sizeX;
         let mapX = Math.floor(this.playerPosX);
         let mapY = Math.floor(this.playerPosY);
-
-        let planeNormalX = Math.cos(this.playerAngleRad);
-        let planeNormalY = Math.sin(this.playerAngleRad);
-
         for(let px = 0; px < this.sizeX; px++){
             //DDA:
             let pc = px * oneOverSizeX - 0.5;
@@ -186,14 +190,20 @@ class SomeRandomGameWindow extends GsWindow{
 
             let hitResult = this.dda_Raycast(this.playerPosX, this.playerPosY, mapX, mapY, dirX, dirY);
             let hitAnything = hitResult[2];
+            let side = hitResult[1];
             let perpSideDist = hitResult[0];
+
+            let hitposWsX = this.playerPosX + dirX * perpSideDist;
+            let hitposWsY = this.playerPosY + dirY * perpSideDist;
+
+            let hitpos = side == 0? hitposWsY : hitposWsX;
 
             //let hitPos = [dirX * perpSideDist, dirY * perpSideDist];
             //let hitPosProj = hitPos[0] * planeNormalX + hitPos[1] * planeNormalY;
 
             //draw the wall
             if(hitAnything)
-                this.setBufferWallStrip(px, perpSideDist * Math.cos(rayAngle - this.playerAngleRad));
+                this.setBufferWallStrip(px, hitpos, side, perpSideDist * Math.cos(rayAngle - this.playerAngleRad));
 
 
 
@@ -201,7 +211,7 @@ class SomeRandomGameWindow extends GsWindow{
         this.buffer.updatePixels();
     }
 
-    setBufferWallStrip(x, distance)
+    setBufferWallStrip(x, pos, side, distance)
     {
         //first we calculate the lineheight
         let lineHeight = Math.floor(this.sizeY / distance);
@@ -219,10 +229,31 @@ class SomeRandomGameWindow extends GsWindow{
         //now we draw the wall
         let color = themeStyle.secondaryColor;
         let colorIndex = 0;
-        let brightness = exp(-distance * 0.25);
+        
+
+        let shouldDrawFullStrip = false;
+        let shouldDither = false;
+        let sideBrightness = side == 0? 1 : 0.5;
+        let brightness = exp(-distance * 0.25) * sideBrightness;
+
+        let fractionalPos = pos - Math.floor(pos);
+        for(let p2 = 0; p2 <= 1; p2+=0.25){
+            let diff = Math.abs(p2 - fractionalPos);
+            if(diff < 0.005){
+                shouldDrawFullStrip = true;
+                break;
+            }
+            else if(diff < 0.01){
+                shouldDrawFullStrip = true;
+                shouldDither = true;
+                break;
+            }
+        }
 
         for(let y = drawStart; y < drawEnd; y++){
             
+            if(!shouldDrawFullStrip && y >= (drawStart + 2) && y <= drawEnd - 3) continue;
+            if(shouldDither && y % 2 == 0) continue;
 
             let index = (x + y * this.sizeX) * 4;
             this.buffer.pixels[index] = color[0] * brightness;
@@ -237,6 +268,8 @@ class SomeRandomGameWindow extends GsWindow{
         //calculate block:
         this.buffer.push();
         this.drawPlayerViewport();
+        this.buffer.tint(themeStyle.primaryColor);
+        this.buffer.image(this.logoImg, this.sizeX * 0.5 - this.logoImg.width * 0.5, this.sizeY * 0.35 - this.logoImg.height * 0.5);
         this.buffer.pop();
         this.renderBuffer();
     }
