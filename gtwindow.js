@@ -37,13 +37,13 @@ let font = null;
 function preload(){
 
   font = loadFont("assets/consola.ttf");
-  let template = new NeofetchWindow("GrateStation OS v1.0", 512, 512, 240, 120);
-  let tw = new FileDecryptWindow("Test Window", 256, 256, 280, 240);
-  let gol = new GameOfLifeWindow("ChemTr4il Analyzer", 384, 384, 480, 240);
-  let call = new IncomingCallWindow("Caller ID", 840, 320, 360, 240);
-  let cube3d = new Random3DObjectWindow("3D Cube", 1200, 480, 240, 320)
-  let dvdPlayer = new DvdPlayerWindow("Insert DVD...", 1200, 240, 480, 240);
-  let doom3d = new SomeRandomGameWindow("BOOP", 1500, 480, 320, 240)
+  let template = new NeofetchWindow("GrateStation OS v1.0", 831, 258, 240, 120);
+  let tw = new FileDecryptWindow("Test Window", 669, 477, 280, 240);
+  let gol = new GameOfLifeWindow("ChemTr4il Analyzer", 942, 749, 480, 240);
+  let call = new IncomingCallWindow("Caller ID", 1004, 472, 360, 240);
+  let cube3d = new Random3DObjectWindow("3D Cube", 1318, 515, 240, 320)
+  let dvdPlayer = new DvdPlayerWindow("Insert DVD...", 1203, 200, 480, 240);
+  let doom3d = new SomeRandomGameWindow("BOOP", 1614, 312, 320, 240)
   applications.push(template);
   applications.push(tw);
   applications.push(gol);

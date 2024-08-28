@@ -20,6 +20,13 @@ class WindowManager {
     }
   }
   
+  reportAllWindowLocs(){
+    for(let i = 0; i < this.activeWindows.length; i++){
+      let w = this.activeWindows[i];
+      console.log(w.title + " x: " + w.posX + " y: " + w.posY);
+    }
+  }
+
   startWindowInstance(w){
     this._themeManager.applyThemeStyle(w);
     this.activeWindows.push(w);
