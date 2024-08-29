@@ -55,6 +55,27 @@ function preload(){
   applications.push(doom3d);
 }
 
+
+window.wallpaperPropertyListener = {
+  applyUserProperties: function(properties) {
+      if (properties.theme) {
+          // Do something with yourproperty
+          loadTheme(properties.theme.value);
+      }
+      if (properties.anotherproperty) {
+          // Do something with anotherproperty
+      }
+      // Add more properties here
+  },
+};
+
+function loadTheme(name){
+  fetch('./theme.json')
+  .then((response) => response.json())
+  .then((json) => themeStyle = json[name]);
+}
+
+
 function setup() {
   system.setWindowDimensions(windowWidth, windowHeight);
   system.initialize();
