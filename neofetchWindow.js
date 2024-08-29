@@ -61,7 +61,7 @@ class NeofetchWindow extends GsWindow{
       //line(
         this.buffer.textFont("consolas");
         this.buffer.textAlign(CENTER, CENTER);
-        this.buffer.fill(themeStyle.headbarTextColor);
+        this.buffer.fill(themeStyle.accentColor);
         //this.buffer.stroke(themeStyle.primaryColor);
         //this.buffer.textStyle(BOLD);
         this.buffer.push();
