@@ -64,5 +64,18 @@
         "backgroundColor": [0, 0, 0],
         "minUnit": [0, 16, 8],
         "colorRatio": [0, 1, 0.75]
+    },
+    "2077": {
+        "windowColor": [255, 91, 82],
+        "headbarTextColor": [0, 0, 0],
+        "accentColor": [87, 235, 246],
+        "primaryColor": [0, 208, 168],
+        "secondaryColor": [254, 248, 73],
+        "tertiaryColor": [54, 129, 124],
+        "quaternaryColor": [38, 52, 80],
+        "fifthColor": [0, 64, 32],
+        "backgroundColor": [0, 0, 0],
+        "minUnit": [0, 16, 8],
+        "colorRatio": [1, 1, 0.3]
     }
 }
