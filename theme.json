@@ -38,5 +38,18 @@
         "backgroundColor": [0, 0, 0],
         "minUnit": [0, 8, 16],
         "colorRatio": [0, 0.5, 1]
+    },
+    "hacknet": {
+        "windowColor": [255, 128, 0],
+        "headbarTextColor": [256, 256, 256],
+        "accentColor": [255, 255, 255],
+        "primaryColor": [0, 208, 64],
+        "secondaryColor": [0, 192, 64],
+        "tertiaryColor": [0, 128, 32],
+        "quaternaryColor": [0, 96, 32],
+        "fifthColor": [0, 64, 16],
+        "backgroundColor": [0, 0, 0],
+        "minUnit": [0, 16, 8],
+        "colorRatio": [1, 0.0, 0.0]
     }
 }
