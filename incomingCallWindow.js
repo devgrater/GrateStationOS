@@ -14,7 +14,7 @@ class IncomingCallWindow extends GsWindow{
     }
 
     scheduleNextCall(){
-        this.timeUntilCall = Math.random() * 5;
+        this.timeUntilCall = Math.random() * 10 + 5;
         this.speaker = null;
         this.speakerText = "";
     }

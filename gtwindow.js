@@ -18,7 +18,7 @@ const themeStyle = {
 
 //green theme:
 
-const themeStyle = {
+themeStyle = {
   windowColor: [0, 255, 0],
   headbarTextColor: [0, 0, 0],
   accentColor: [0, 255, 0],
@@ -35,7 +35,9 @@ const themeStyle = {
 let applications = [];
 let font = null;
 function preload(){
-
+  fetch('./theme.json')
+    .then((response) => response.json())
+    .then((json) => themeStyle = json["blue"]);
   font = loadFont("assets/consola.ttf");
   let template = new NeofetchWindow("GrateStation OS v1.0", 831, 258, 240, 120);
   let tw = new FileDecryptWindow("Test Window", 669, 477, 280, 240);
