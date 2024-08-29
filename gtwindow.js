@@ -37,7 +37,7 @@ let font = null;
 function preload(){
   fetch('./theme.json')
     .then((response) => response.json())
-    .then((json) => themeStyle = json["green"]);
+    .then((json) => themeStyle = json["SS2"]);
   font = loadFont("assets/consola.ttf");
   let template = new NeofetchWindow("GrateStation OS v1.0", 831, 258, 240, 120);
   let tw = new FileDecryptWindow("Test Window", 669, 477, 280, 240);
