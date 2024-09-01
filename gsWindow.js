@@ -3,7 +3,9 @@ class GsWindow{
   onWindowPreload(){
 
   }
-  constructor(title, posX, posY, sizeX, sizeY){
+  constructor(identifier, title, posX, posY, sizeX, sizeY){
+    this.identifier = identifier;
+    this.canBeClosed = true;
     this.windowSetup(title, posX, posY, sizeX, sizeY);
     //this.onWindowReady(); //your function goes here...
     this.onWindowPreload();
@@ -22,7 +24,7 @@ class GsWindow{
     this.buffer = createGraphics(this.sizeX, this.sizeY);
     this.windowState = "NORMAL";
     this.mouseClickedExit = false;
-  
+    
   }
   
   onWindowReady(){
@@ -53,7 +55,7 @@ class GsWindow{
   }
 
   closeWindow(){
-    wm.closeWindowInstance(this);
+    if(!this.canBeClosed) return; wm.closeWindowInstance(this);
   }
 
   onMouseDownWindow(mx, my, pressedButton){
@@ -106,6 +108,7 @@ class GsWindow{
   }
   
   drawExitIcon(cornerX, cornerY){
+    if(!this.canBeClosed) return;
     push();
       fill(themeStyle.headbarTextColor);
       rect(cornerX + this.sizeX - 16, cornerY - this.headerbarSize + 4, 12, 12);
