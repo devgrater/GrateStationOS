@@ -55,7 +55,6 @@ function preload(){
   applications.push(doom3d);
 }
 
-
 window.wallpaperPropertyListener = {
   applyUserProperties: function(properties) {
       if (properties.theme) {

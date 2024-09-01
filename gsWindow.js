@@ -21,6 +21,8 @@ class GsWindow{
     this.lifespan = 0;
     this.buffer = createGraphics(this.sizeX, this.sizeY);
     this.windowState = "NORMAL";
+    this.mouseClickedExit = false;
+  
   }
   
   onWindowReady(){
@@ -35,13 +37,23 @@ class GsWindow{
   onResize(){
     
   }
-  
+
+
   onMouseDownHeadbar(mx, my, pressedButton){
     this.isMouseDragging = true;
+    this.mouseClickedExit = this.isMouseInExitButton(mx, my);
   }
   
   onMouseUpHeadbar(mx, my, pressedButton){
     this.isMouseDragging = false;
+    if(this.mouseClickedExit && this.isMouseInExitButton(mx, my)){
+      this.mouseClickedExit = false;
+      this.closeWindow();
+    }
+  }
+
+  closeWindow(){
+    wm.closeWindowInstance(this);
   }
 
   onMouseDownWindow(mx, my, pressedButton){
@@ -99,6 +111,19 @@ class GsWindow{
       rect(cornerX + this.sizeX - 16, cornerY - this.headerbarSize + 4, 12, 12);
     pop();
   }
+
+  isMouseInExitButton(mx, my){
+    let relativeMouse = this.getPositionRelativeToWindow(mx, my);
+    mx = relativeMouse.x;
+    my = relativeMouse.y;
+    let cornerX = this.sizeX - 16;
+    let cornerY = -this.headerbarSize + 4;
+
+    let isInXRange = mx > cornerX && mx < cornerX + 12;
+    let isInYRange = my > cornerY && my < cornerY + 12;
+    return isInXRange && isInYRange;
+  }
+  
   
   drawWindowTitle(cornerX, cornerY){
     textAlign(LEFT, CENTER);

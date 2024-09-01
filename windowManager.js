@@ -32,6 +32,13 @@ class WindowManager {
     this.activeWindows.push(w);
     w.onWindowReady();
   }
+
+  closeWindowInstance(w){
+    let index = this.activeWindows.indexOf(w);
+    if(index > -1){
+      this.activeWindows.splice(index, 1);
+    }
+  }
   
   onMouseMoved(mx, my, px, py){
     for(let i = 0; i < this.activeWindows.length; i++){
@@ -66,7 +73,7 @@ class WindowManager {
   onMouseReleased(mx, my, releasedButton){
     for(let i = 0; i < this.activeWindows.length; i++){
       let w = this.activeWindows[i];
-      w.onMouseUpHeadbar();
+      w.onMouseUpHeadbar(mx, my);
       w.onMouseUpWindow();
     }
   }
